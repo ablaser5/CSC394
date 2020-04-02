@@ -16,4 +16,7 @@ pip3 install -r requirements.txt
 python main.py
 ```
 
+HTML is in the templates folder
+CSS/JS is in static folder
+
 
