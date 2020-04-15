@@ -16,9 +16,7 @@ CREATE TABLE `positions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
-LOCK TABLES `positions` WRITE;
 INSERT INTO `positions` VALUES (1,'chief_executive_officer','CEO'),(2,'chief_information_officer','CTO'),(3,'project_manager','Project Manager'),(4,'senior_developer','Senior Developer'),(5,'developer','Developer');
-UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `projects`;
 CREATE TABLE `projects` (
