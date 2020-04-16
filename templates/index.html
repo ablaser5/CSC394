@@ -5,10 +5,31 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 	<script type="text/javascript" src="{{url_for('static', filename='js/index.js')}}"></script>
 	<script type="text/javascript">
-		alert("Team 3 == Best Team.")
+		
 	</script>
 </head>
 <body>
-	CSC 394 Project
+	<div id="form">
+		<form action="/" method="POST" name="login">
+			<div id="input-holder">
+				<input type="text" name="email" class="login-input">
+				<input type="text" name="password" class="login-input">
+				<input type="submit" name="submit" class="login-input" id="submit">
+			</div>
+		</form>
+	</div>
+
+	{% if email %}
+		<p>{{email}}</p>
+	{% else %}
+		<p>No Email Yet</p>
+	{% endif %}
+
+	{% if password %}
+		<p>{{password}}</p>
+	{% else %}
+		<p>No Password Yet</p>
+	{% endif %}
+	
 </body>
 </html>

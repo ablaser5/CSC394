@@ -1,1 +1,1 @@
-ekekke
+console.log("Javascript Connected.");
