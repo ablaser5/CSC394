@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+	User is Logged In: {{ email }}
+
+	{% for message in messages %}
+		<p class="error">{{ message }}</p>
+	{% endfor %}
+
+{% endblock %}
