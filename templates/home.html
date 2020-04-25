@@ -5,10 +5,12 @@
 {% endblock %}
 {% block content %}
 
-	User is Logged In: {{ email }}
+	User is Logged In: {{ user['user_hash'] }}
 
 	{% for message in messages %}
 		<p class="error">{{ message }}</p>
 	{% endfor %}
+
+	<a href="/logout">Logout</a>
 
 {% endblock %}

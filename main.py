@@ -3,11 +3,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
 
 # Packages In our project
-from project.database import connect, verifyUser, checkUser, alreadyAnUser, isUnverified
+from project.database import connect, verifyUser, checkUser, alreadyAnUser, isUnverified, getCurrentUser
 from project.forms import loadForm, checkEmptyForm
 
 app = Flask(__name__)
-app.secret_key = 'csc394team3'
+app.secret_key = 'csc394team3_jgdjd5dd56eyjr67e56'
 
 mail_settings = {
     "MAIL_SERVER": 'smtp.gmail.com',
@@ -24,7 +24,7 @@ mail = Mail(app)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-	user = session['email']
+	user = session['user_hash']
 	if user:
 		return redirect(url_for('home'))
 	else:
@@ -33,7 +33,7 @@ def index():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-	user = session['email']
+	user = session['user_hash']
 	if user:
 		return redirect(url_for('home'))
 
@@ -75,7 +75,7 @@ def register():
 					db.close()
 					registration = "<p>Thank you for signing up. Please click the link to verify.</p><br>"
 					registration += "<p><a href='http://127.0.0.1:5000/confirm?user="+str(user_hash)+"'>Verify</a></p>"
-					msg = Message(subject='Verify Email - CSC 394', html=registration, sender="webappforcsc394@gmail.com", recipients=["team3csc394@gmail.com"])
+					msg = Message(subject='Verify Email - CSC 394', html=registration, sender="webappforcsc394@gmail.com", recipients=["team3csc394@gmail.com"]) # ENTER YOUR EMAIL IN recipients
 					mail.send(msg)
 					success.append("You have been signed up. Please check your Email to verify your account.")
 				except Exception as e:
@@ -90,16 +90,19 @@ def register():
 def home():
 	errors = []
 	messages = []
-	user_email = session['email']
-	if isUnverified(user_email):
-		messages.append("Please Verify your email address!")
-	if not user_email:
+
+	user = session['user_hash']
+	user = getCurrentUser(user)
+	if user:
+		if isUnverified(user['email']):
+			messages.append("Please Verify your email address!")
+	else:
 		return redirect(url_for('login'))
-	return render_template('home.html', email=user_email, messages=messages)
+	return render_template('home.html', user=user, messages=messages)
 
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
-	session['email'] = None
+	session['user_hash'] = None
 	return redirect(url_for('login'))
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -117,7 +120,8 @@ def login():
 		email = form_dict['email']
 		password = form_dict['password']
 		if checkUser(email, password):
-			session['email'] = email
+			user = getCurrentUser(None,email=email)
+			session['user_hash'] = user['user_hash']
 			return redirect(url_for('home'))
 		else:
 			errors.append("Email or Password is Incorrect. Try Again.")
