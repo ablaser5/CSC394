@@ -4,7 +4,7 @@ CREATE TABLE `permissions` (
   `permission_name` varchar(50) DEFAULT NULL,
   `permission_title` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `permissions` VALUES (1,'administrator','Administrator'),(2,'user','User');
 
@@ -14,7 +14,7 @@ CREATE TABLE `positions` (
   `position_name` varchar(50) DEFAULT NULL,
   `position_title` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `positions` VALUES (1,'chief_executive_officer','CEO'),(2,'chief_information_officer','CTO'),(3,'project_manager','Project Manager'),(4,'senior_developer','Senior Developer'),(5,'developer','Developer');
 
@@ -43,7 +43,7 @@ CREATE TABLE `users` (
   KEY `position_id` (`position_id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `users_ibfk_2` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `users` VALUES (1,'elonmusk@tesla.com','Elon','Musk','toinfinityandbeyond',1,1),(2,'jimhalpert@dundermifflen.org','Jim','Halpert','bearsbeetsbattlestargalactica',1,3),(3,'richardhendrix@piedpiper.com','Richard','Hendrix','ilovecompression123',2,4),(4,'dinesh@piedpiper.com','Dinesh','Chugtai','imbetterthangilfoyle',2,5),(5,'gilfoyle@piedpiper.com','Bertram','Gilfoyle','imbetterthandinesh',2,5);
 
