@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+	<div id="form">
+		<span><h3>Register</h3></span>
+		<form action="" method="POST" name="register">
+			<div id="input-holder">
+				{% for error in errors %}
+					<p class="error">{{ error }}</p>
+				{% endfor %}
+				{% for s in success %}
+					<p class="success">{{ s }}</p>
+				{% endfor %}
+				<input type="text" name="email" class="login-input" placeholder="Email">
+				<input type="text" name="first_name" class="login-input" placeholder="First Name">
+				<input type="text" name="last_name" class="login-input" placeholder="Last Name">
+				<input type="password" name="password" class="login-input" placeholder="Password">
+				<input type="password" name="confirm_password" class="login-input" placeholder="Confirm Password">
+				<input type="submit" name="submit" class="login-input" id="submit">
+				<p>Already have an account? <a href="/login">Login</a></p>
+			</div>
+		</form>
+	</div>
+
+{% endblock %}
