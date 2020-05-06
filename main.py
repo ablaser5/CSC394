@@ -36,9 +36,12 @@ def index():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-	user = session['user_hash']
-	if user:
-		return redirect(url_for('home'))
+	try:
+		user = session['user_hash']
+		if user:
+			return redirect(url_for('home'))
+	except Exception as e:
+		pass
 
 	form_dict = {}
 	errors = []
