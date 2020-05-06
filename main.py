@@ -24,10 +24,13 @@ mail = Mail(app)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-	user = session['user_hash']
-	if user:
-		return redirect(url_for('home'))
-	else:
+	try:
+		user = session['user_hash']
+		if user:
+			return redirect(url_for('home'))
+		else:
+			return redirect(url_for('login'))
+	except Exception as e:
 		return redirect(url_for('login'))
 
 
@@ -107,9 +110,12 @@ def logout():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-	user = session['email']
-	if user:
-		return redirect(url_for('home'))
+	try:
+		user = session['email']
+		if user:
+			return redirect(url_for('home'))
+	except Exception as e:
+		pass
 
 	form_dict = {}
 	errors = []

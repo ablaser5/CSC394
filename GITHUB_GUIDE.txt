@@ -1,0 +1,55 @@
+Github Guide
+
+Key terms:
+
+origin - github repository where the code that we push goes and can include any branches that have been pushed too
+branch - a new instance of all the code another branch had, but separate from the originating code
+
+1. fetch all branches from the origin to your machine: git fetch
+2. see all branches on your machine: git branch
+3. checkout/create a NEW branch: git checkout -b <name of branch>
+NOTE: the branch you checkout will be a branch off of whichever branch you are on currently
+4. checkout a branch: git checkout <name of branch> (switches the current branch)
+5. check the current status: git status
+NOTE: use this often to see which branch you are on, if there are any changes, or if there are any issues. 
+6. retrieve a branch from the origin: git pull origin <name of branch> 
+	- this will get a branch from the origin if it does not exist.
+	- if the branch already exists, on your local, it will pull new changes that have been pushed to the origin.
+7. save changes in the current branch: git stash
+	- if you have uncommitted changes, if you use git stash you can save those changes temporarily, and then 
+	  move them
+8. push a branch to the origin: git push origin <name of branch>
+	- pushes new changes to the origin and can overwrite what is currently there
+	- !!!!BE CAREFUL WHEN DOING THIS!!!!
+	- always double check the branch you are on
+
+For Our Project
+
+Branches:
+
+	- master: the 'production' level branch, composing the most recent, working version of our project
+
+	- develop: the branch we use to test our project after working on our own, individual branches
+
+	- individual branches: these can be just be our names and will be the branch that each of us work within so we
+							can break up the work
+
+	- additional branches: we will most likely want to use even more branches to break down the work even further, for example, 
+							if we have my branch, aaron, and I am going to work on the homepage, I may want to create another branch, aaron_homepage
+							or something like this and then merge that back into aaron when that part is complete. This is mainly just for orginization and not
+							everyone will need these branches on there local. 
+
+Basic Workflow from when you first start, to when you are ready to test changes, to when you are ready to push live:
+
+1. check the branch you are currently on (to avoid dumb mistakes)
+2. switch branches accordingly
+3. pull the latest version of master and develop (git pull origin master, git pull origin develop) (make sure to checkout each branch first before pulling)
+4. checkout whichever branch you are going to work on
+5. Get to it
+6. commit changes to your branch
+7. checkout develop
+8. merge your branch into develop
+9. Test your changes
+10. when your code works, push develop to origin, then checkout master
+11. merge your branch into master
+12. push master to origin
