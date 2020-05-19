@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Connects to the database and returns the database object with the cursor
 def connect():
 	# Open database connection
-	db = pymysql.connect("localhost","root","Elfrida123!","CSC394" ) # EDIT THIS TO FIT YOUR CONFIG
+	db = pymysql.connect("localhost","root","Qpalzm11@","csc394" ) # EDIT THIS TO FIT YOUR CONFIG
 	# prepare a cursor object using cursor() method
 	cursor = db.cursor()
 	return db, cursor
