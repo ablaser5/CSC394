@@ -81,7 +81,7 @@ def register():
 					db.close()
 					registration = "<p>Thank you for signing up. Please click the link to verify.</p><br>"
 					registration += "<p><a href='http://127.0.0.1:5000/confirm?user="+str(user_hash)+"'>Verify</a></p>"
-					msg = Message(subject='Verify Email - CSC 394', html=registration, sender="webappforcsc394@gmail.com", recipients=["team3csc394@gmail.com"]) # ENTER YOUR EMAIL IN recipients
+					msg = Message(subject='Verify Email - CSC 394', html=registration, sender="webappforcsc394@gmail.com", recipients=[str(email)]) # ENTER YOUR EMAIL IN recipients
 					mail.send(msg)
 					success.append("You have been signed up. Please check your Email to verify your account.")
 				except Exception as e:
