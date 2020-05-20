@@ -97,7 +97,7 @@ def user():
 	user = session['user_hash']
 	user = getCurrentUser(user)
 
-	return render_template('user.html',fname = user['first_name'] ,lname= user['last_name'] , email= user['email'] , perm=user['permission_id'] )
+	return render_template('user.html',fname = user['first_name'] ,lname= user['last_name'] , email= user['email'] , perm=user['permission'] )
 	
 @app.route('/home', methods=['POST', 'GET'])
 def home():
