@@ -30,6 +30,12 @@
 			<a href="/admin_create_user">Create User</a>
 		</div>
 	{% endif %}
+
+	{% if user['permission'] == 'administrator' %}
+		<div class="home-button">
+			<a href="/admin_manage_users">Manage Users</a>
+		</div>
+	{% endif %}
 	
 	<a href="/logout">Logout</a>
 

@@ -6,7 +6,7 @@ from flask_mail import Mail, Message
 from project.database import connect, verifyUser, checkUser,\
 							alreadyAnUser, isUnverified, getCurrentUser, \
 							getUserPermission, currentUser, getAllPermissions, \
-							getAllPositions, getSiteURL
+							getAllPositions, getSiteURL, getColumns
 from project.forms import loadForm, checkEmptyForm
 
 app = Flask(__name__)
@@ -238,6 +238,92 @@ def complete_signup(user_hash):
 			return redirect(url_for('home'))
 			
 	return render_template('register.html', current_data=user, errors=errors, success=success)
+
+@app.route('/admin_manage_users', methods=['POST', 'GET'])
+def admin_manage_users():
+	user = session['user_hash']
+	user = currentUser(user)
+	db, cur = connect()
+	sql = """
+			SELECT * FROM users
+		  """
+	cur.execute(sql)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	users = []
+	for row in results:
+		d = {}
+		for key,value in zip(columns, list(row)):
+			d[key] = value
+		users.append(d)
+
+	return render_template('admin_manage_users.html', user=user, users=users, columns=columns)
+
+@app.route('/admin_edit_user/<user_hash>', methods=['POST', 'GET'])
+def admin_edit_user(user_hash):
+	errors = []
+	success = []
+	user = session['user_hash']
+	user = currentUser(user)
+	permissions = getAllPermissions()
+	positions = getAllPositions()
+	db, cur = connect()
+	sql = """
+			SELECT 
+				U.email as email, 
+				U.first_name as first_name, 
+				U.last_name as last_name,
+				P.permission_name as permission_name,
+				P.id as permission_id,
+				POS.id as position_id,
+				POS.position_name as position_name
+			FROM users U
+			JOIN permissions P
+				ON P.id = U.permission_id
+			JOIN positions POS
+				ON POS.id = U.position_id
+			WHERE U.user_hash = %s
+		  """
+	cur.execute(sql, [user_hash])
+	result = cur.fetchone()
+	columns = getColumns(cur)
+	user_data = {}
+	for key, value in zip(columns, list(result)):
+		user_data[key] = value
+
+	form_dict = {}
+
+	if request.method == 'POST':
+		form_dict = loadForm(form_dict)
+		email = form_dict['email']
+		first_name = form_dict['first_name']
+		last_name = form_dict['last_name']
+		permission_id = int(form_dict['permission_id'])
+		position_id = int(form_dict['position_id'])
+
+		sql = """
+				UPDATE users
+				SET
+					email = %s,
+					first_name = %s,
+					last_name = %s,
+					permission_id = %s,
+					position_id = %s
+				WHERE user_hash = %s
+			  """
+		data = [email, first_name, last_name, permission_id, position_id, user_hash]
+		cur.execute(sql, data)
+		db.commit()
+		db.close()
+
+		user_data = form_dict
+		user_data['permission_id'] = int(user_data['permission_id'])
+		user_data['position_id'] = int(user_data['position_id'])
+		
+		success.append("Updated User's Info")
+
+	return render_template('admin_edit_user.html', user_data=user_data, user=user, permissions=permissions, positions=positions, errors=errors, success=success)
 
 @app.errorhandler(404)
 def page_not_found(e):
