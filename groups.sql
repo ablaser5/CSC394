@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `user_groups`;
-DROP TABLE IF EXISTS `group`;
+DROP TABLE IF EXISTS `groups`;
 
-CREATE TABLE `group` (
+CREATE TABLE `groups` (
   `g_id` int(11) NOT NULL AUTO_INCREMENT,
   `g_name` varchar(50) Not NULL,
   `owner` varchar (50) NOT NULL, 
@@ -12,5 +12,5 @@ CREATE TABLE `user_groups` (
   `g_id` int(11),
   `email` varchar(50) DEFAULT NULL,
   FOREIGN KEY (`email`) REFERENCES `users` (`email`), 
-  FOREIGN KEY (`g_id`) REFERENCES `group` (`g_id`) 
+  FOREIGN KEY (`g_id`) REFERENCES `groups` (`g_id`) 
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
