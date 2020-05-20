@@ -5,12 +5,32 @@
 {% endblock %}
 {% block content %}
 
-	User is Logged In: {{ user['user_hash'] }}
+	User is Logged In: {{ user['user_hash'] }} <br>
+	User Permission: {{ user['permission'] }}
 
 	{% for message in messages %}
 		<p class="error">{{ message }}</p>
 	{% endfor %}
 
+	<div class="home-button">
+		<a href="/account">My Account</a>
+	</div>
+	<div class="home-button">
+		<a href="/kanban">KanBan</a>
+	</div>
+	<div class="home-button">
+		<a href="/">Archive</a>
+	</div>
+	<div class="home-button">
+		<a href="/">Groups</a>
+	</div>
+
+	{% if user['permission'] == 'administrator' %}
+		<div class="home-button">
+			<a href="/admin_create_user">Create User</a>
+		</div>
+	{% endif %}
+	
 	<a href="/logout">Logout</a>
 
 {% endblock %}

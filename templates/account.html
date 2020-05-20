@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+	User is Logged In: {{ user['user_hash'] }} <br>
+	User Permission: {{ user['permission'] }}
+
+	<h1>My Account</h1>
+
+	<table>
+		{% for key in user %}
+		<tr>
+			<th>{{ key }}</th>
+			<td>{{ user[key] }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<a href="/home">Home</a><br>
+	<a href="/logout">Logout</a>
+
+{% endblock %}

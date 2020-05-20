@@ -7,7 +7,7 @@
 
 	<div id="regform">
 		<span><h3>Register</h3></span>
-		<form action="" method="POST" name="register">
+		<form action="/register" method="POST" name="register">
 			<div> 
 				 <center><img src = "static/assets/KonnectLogos.png">
 				 </center>
@@ -19,7 +19,11 @@
 				{% for s in success %}
 					<p class="success">{{ s }}</p>
 				{% endfor %}
-				<input type="text" name="email" class="login-input" placeholder="Email">
+				{% if not current_data == None %}
+					<input type="text" name="email" class="login-input" value="{{current_data['email']}}">
+				{% else %}
+					<input type="text" name="email" class="login-input" placeholder="Email">
+				{% endif %}
 				<input type="text" name="first_name" class="login-input" placeholder="First Name">
 				<input type="text" name="last_name" class="login-input" placeholder="Last Name">
 				<input type="password" name="password" class="login-input" placeholder="Password">

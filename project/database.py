@@ -15,11 +15,23 @@ def getColumns(cursor):
 
 def getCurrentUser(user_hash, email = None):
 	db,cur = connect()
+	sql = """
+			SELECT
+				U.email as email,
+				U.first_name as first_name,
+				U.last_name as last_name,
+				P.permission_name as permission,
+				U.user_hash as user_hash,
+				U.verified as verified
+			FROM users U
+			JOIN permissions P
+				ON P.id = U.permission_id
+		  """
 	if email:
-		sql = "SELECT * FROM users WHERE email = %s"
+		sql += "WHERE email = %s"
 		cur.execute(sql, [email])
 	else:
-		sql = "SELECT * FROM users WHERE user_hash = %s"
+		sql += "WHERE user_hash = %s"
 		cur.execute(sql, [user_hash])
 	results = cur.fetchall()
 	cols = getColumns(cur)
@@ -69,6 +81,7 @@ def alreadyAnUser(email):
 	sql = "SELECT email FROM users WHERE email = %s"
 	cur.execute(sql, [email])
 	result = cur.fetchone()
+	db.close()
 	if result:
 		return True
 	else:
@@ -79,9 +92,80 @@ def isUnverified(email):
 	sql = "SELECT verified FROM users WHERE email = %s"
 	cur.execute(sql, [email])
 	result = cur.fetchone()
+	db.close()
 	if result:
 		if result[0] == 1:
 			return False
 		if result[0] == 0:
 			return True
 	return True
+
+def getUserPermission(user_hash):
+	db, cur = connect()
+	sql = """
+			SELECT 
+				P.permission_name
+			FROM users U
+			JOIN permissions P
+				ON P.id = U.permission_id
+			WHERE U.user_hash = %s
+		  """
+	cur.execute(sql, [user_hash])
+	result = cur.fetchone()
+	db.close()
+	if result:
+		return result[0]
+	else:
+		return None
+
+def currentUser(user_hash):
+	user = getCurrentUser(user_hash)
+	if user:
+		return user
+	else:
+		return None
+
+def getAllPermissions():
+	db, cur = connect()
+	sql = """
+			SELECT * FROM permissions
+		  """
+	cur.execute(sql)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	permissions = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		permissions.append(r)
+	return permissions
+
+def getAllPositions():
+	db, cur = connect()
+	sql = """
+			SELECT * FROM positions
+		  """
+	cur.execute(sql)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	positions = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		positions.append(r)
+	return positions
+
+def getSiteURL():
+	db, cur = connect()
+	sql = """
+			SELECT site_url FROM config
+		  """
+	cur.execute(sql)
+	result = cur.fetchone()
+	return result[0]
+
+
