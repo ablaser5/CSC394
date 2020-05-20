@@ -6,7 +6,7 @@ from flask_mail import Mail, Message
 from project.database import connect, verifyUser, checkUser,\
 							alreadyAnUser, isUnverified, getCurrentUser, \
 							getUserPermission, currentUser, getAllPermissions, \
-							getAllPositions, getSiteURL, getColumns
+							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups
 from project.forms import loadForm, checkEmptyForm
 
 app = Flask(__name__)
@@ -36,6 +36,19 @@ def index():
 			return redirect(url_for('login'))
 	except Exception as e:
 		return redirect(url_for('login'))
+@app.route('/groups', methods=['POST', 'GET'])
+def groups():
+	form_dict = {}
+	user = session['user_hash']
+	if request.method == 'POST':
+		# Get data from form
+		print(request.form)
+		form_dict = request.form['sub']
+		names = getUsersByGroups(form_dict);
+		return render_template('grouplist.html', team = names)
+	
+	groups = getAllGroups()
+	return render_template('groups.html', groups = groups)
 
 
 @app.route('/register', methods=['POST', 'GET'])

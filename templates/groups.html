@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+ 
+    <span><h3>Teams</h3></span>
+    <form action="" method="POST" name="groups">
+      <div> 
+         <center><img src = "static/assets/KonnectLogos.png">
+         </center>
+      </div>
+
+     <center> <h4> List of Teams </h4>
+      {% for i in groups %} 
+       <form action="" method="POST" name="groups">
+        <div id="input-holder">
+        <button type = "submit" name ="sub" value="{{i['g_id']}}" > {{i['g_name']}} </button>
+        </div>
+        {% endfor %}
+      </center>
+     
+    </form>
+  
+
+{% endblock %}
