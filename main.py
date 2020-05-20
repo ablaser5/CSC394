@@ -191,7 +191,7 @@ def admin_create_user():
 		db.commit()
 		db.close()
 		registration = "<p>You Have been Invited to Sign up at TaskKonnect.</p><br>"
-		registration += "<p><a href='"+str(site_url)+"complete_signup?user="+str(user_hash)+"'>Create Your Account</a></p>"
+		registration += "<p><a href='"+str(site_url)+"complete_signup/"+str(user_hash)+"'>Create Your Account</a></p>"
 		msg = Message(subject='TaskKonnect Invite - CSC 394', html=registration, sender="webappforcsc394@gmail.com", recipients=[str(email)])
 		mail.send(msg)
 		success.append("A Signup Email has been sent to: " + str(email))
@@ -200,8 +200,44 @@ def admin_create_user():
 	else:
 		return redirect(url_for('login'))
 
-@app.route('/complete_signup', methods=['POST', 'GET'])
-def complete_signup():
+@app.route('/complete_signup/<user_hash>', methods=['POST', 'GET'])
+def complete_signup(user_hash):
+	errors = []
+	success = []
+	user = currentUser(user_hash)
+	form_dict = {}
+	if request.method == 'POST':
+		form_dict = loadForm(form_dict)
+		email = form_dict['email']
+		first_name = form_dict['first_name']
+		last_name = form_dict['last_name']
+		password = generate_password_hash(form_dict['password'])
+		confirm_password = form_dict['confirm_password']
+		new_user_hash = generate_password_hash(str(email) + str(first_name) + str(last_name) + str(password))
+		# Validate As Needed
+		if form_dict['password'] != confirm_password:
+			errors.append("Passwords do not Match.")
+		if len(errors) == 0:
+			db, cur = connect()
+			sql = """
+					UPDATE users 
+					SET 
+						first_name = %s, 
+						last_name = %s, 
+						password = %s, 
+						user_hash = %s,
+						verified = 1
+					WHERE user_hash = %s
+				  """
+			data = [first_name, last_name, password, new_user_hash, user_hash]
+			cur.execute(sql, data)
+			db.commit()
+			db.close()
+
+			session['user_hash'] = new_user_hash
+			return redirect(url_for('home'))
+			
+	return render_template('register.html', current_data=user, errors=errors, success=success)
 
 @app.errorhandler(404)
 def page_not_found(e):
