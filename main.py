@@ -97,6 +97,13 @@ def register():
 			errors.append('There are empty fields in the form.')
 	return render_template('register.html', current_data=None, errors=errors, success=success)
 
+@app.route('/user', methods= ['POST', 'GET'])
+def user():
+	user = session['user_hash']
+	user = getCurrentUser(user)
+
+	return render_template('user.html',fname = user['first_name'] ,lname= user['last_name'] , email= user['email'] , perm=user['permission_id'] )
+	
 @app.route('/home', methods=['POST', 'GET'])
 def home():
 	errors = []

@@ -38,6 +38,7 @@ CREATE TABLE `users` (
   `password` varchar(50) DEFAULT NULL,
   `permission_id` int(11) DEFAULT NULL,
   `position_id` int(11) DEFAULT NULL,
+  'user_hash'  varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `permission_id` (`permission_id`),
   KEY `position_id` (`position_id`),
