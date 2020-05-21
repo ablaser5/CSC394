@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+<h2>Team List</h2>
+<ol> 
+{% for i in team %} 
+<li> <a>{{i['first_name']}}</a> <a>{{i['last_name']}}</a></li>
+{% endfor %}
+</ol>
+
+{% endblock %}

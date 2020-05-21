@@ -12,6 +12,22 @@ def connect():
 def getColumns(cursor):
 	columns = [item[0] for item in cursor.description]
 	return columns
+def addUser(gid, email):
+	db,cur = connect()
+	sql = "INSERT INTO user_groups (g_id,email) VALUES (%s,%s)"
+	data = [gid,email]
+	cur.execute(sql,data)
+	db.commit()
+	db.close()
+	
+
+def deleteUser(gid,email):
+	db,cur = connect()
+	sql = "DELETE  FROM user_groups WHERE email = %s"
+	data = [email]
+	cur.execute(sql,data)
+	db.commit()
+	db.close()
 
 def getCurrentUser(user_hash, email = None):
 	db,cur = connect()
@@ -124,7 +140,22 @@ def currentUser(user_hash):
 		return user
 	else:
 		return None
-
+def getAllUsers():
+	db, cur = connect()
+	sql = """
+			SELECT * FROM users
+		  """
+	cur.execute(sql)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	users = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		users.append(r)
+	return users
 def getAllPermissions():
 	db, cur = connect()
 	sql = """
@@ -141,6 +172,42 @@ def getAllPermissions():
 			r[col] = val
 		permissions.append(r)
 	return permissions
+
+def getAllGroups():
+	db, cur = connect()
+	sql = """
+			SELECT * FROM groups;
+		  """
+	cur.execute(sql)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	groups = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		groups.append(r)
+	return groups
+def getUsersByGroups(gid):
+	db, cur = connect()
+	sql = """
+			SELECT first_name, last_name FROM users  inner join user_groups on
+ 			user_groups.email = users.email 
+			where g_id = 
+		  """ 
+	sql += gid
+	cur.execute(sql)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	names = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		names.append(r)
+	return names
 
 def getAllPositions():
 	db, cur = connect()
