@@ -40,12 +40,29 @@ def index():
 def groups():
 	form_dict = {}
 	user = session['user_hash']
+	user = getCurrentUser(user)
 	if request.method == 'POST':
 		# Get data from form
-		print(request.form)
-		form_dict = request.form['sub']
-		names = getUsersByGroups(form_dict);
-		return render_template('grouplist.html', team = names)
+		if "team" in request.form:
+			groups = getAllGroups()
+			sql = "INSERT INTO groups (g_name,owner) VALUES (%s, %s)"
+			data = [request.form['team'],user['first_name']]
+			db, cursor = connect()
+			try:
+				cursor.execute(sql, data)
+				db.commit()
+				db.close()
+			except Exception as e:
+				errors.append("Exception found: " + str(e))
+			groups = getAllGroups()
+			return render_template('groups.html', groups = groups)
+
+		else:
+			print(request.form)
+			form_dict = request.form['sub']
+			names = getUsersByGroups(form_dict);
+			return render_template('grouplist.html', team = names)
+		
 	
 	groups = getAllGroups()
 	return render_template('groups.html', groups = groups)

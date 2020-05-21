@@ -6,7 +6,7 @@
 {% block content %}
  
     <span><h3>Teams</h3></span>
-    <form action="" method="POST" name="groups">
+    
       <div> 
          <center><img src = "static/assets/KonnectLogos.png">
          </center>
@@ -17,11 +17,18 @@
        <form action="" method="POST" name="groups">
         <div id="input-holder">
         <button type = "submit" name ="sub" value="{{i['g_id']}}" > {{i['g_name']}} </button>
-        </div>
-        {% endfor %}
-      </center>
-     
+      </div>
     </form>
+      {% endfor %}
+      </center>
+
+      <form action="" method="POST" name="groups">
+        <label for="team">Create a Team:</label><br>
+        <input type="text" id="team" name="team" value=""><br><br>
+        <input name = "team" type="submit" value="Submit">
+      </form> 
+     
+  
   
 
 {% endblock %}
