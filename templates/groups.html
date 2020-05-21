@@ -22,11 +22,36 @@
       {% endfor %}
       </center>
 
+      <center>
+        <h3> Add user to a team </h3>
+        <form action="" method="POST" name="groups">
+      <select class="login-select" name="permission">
+          {% for i in groups %}
+            <option value="{{i['g_id']}}">{{i['g_name']}}</option>
+          {% endfor %}
+        </select>
+        </center>
+
+        <center>
+
+         <select class="login-select" name="permission">
+          {% for i in users %}
+            <option value="{{i['id']}}">{{i['first_name']}}</option>
+          {% endfor %}
+        </select>
+        <br>
+        <input name = "addusers" type="submit" value="Submit">
+        </form> 
+      </center>
+
+      <center>
+        <h3> Create a Team </h3>
       <form action="" method="POST" name="groups">
         <label for="team">Create a Team:</label><br>
         <input type="text" id="team" name="team" value=""><br><br>
         <input name = "team" type="submit" value="Submit">
       </form> 
+    </center>
      
   
   

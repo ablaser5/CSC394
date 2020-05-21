@@ -124,7 +124,22 @@ def currentUser(user_hash):
 		return user
 	else:
 		return None
-
+def getAllUsers():
+	db, cur = connect()
+	sql = """
+			SELECT * FROM users
+		  """
+	cur.execute(sql)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	users = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		users.append(r)
+	return users
 def getAllPermissions():
 	db, cur = connect()
 	sql = """
