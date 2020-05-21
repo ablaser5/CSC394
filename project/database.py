@@ -12,6 +12,22 @@ def connect():
 def getColumns(cursor):
 	columns = [item[0] for item in cursor.description]
 	return columns
+def addUser(gid, email):
+	db,cur = connect()
+	sql = "INSERT INTO user_groups (g_id,email) VALUES (%s,%s)"
+	data = [gid,email]
+	cur.execute(sql,data)
+	db.commit()
+	db.close()
+	
+
+def deleteUser(gid,email):
+	db,cur = connect()
+	sql = "DELETE  FROM user_groups WHERE email = %s"
+	data = [email]
+	cur.execute(sql,data)
+	db.commit()
+	db.close()
 
 def getCurrentUser(user_hash, email = None):
 	db,cur = connect()

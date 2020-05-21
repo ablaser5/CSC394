@@ -24,8 +24,9 @@
 
       <center>
         <h3> Add user to a team </h3>
+
         <form action="" method="POST" name="groups">
-      <select class="login-select" name="permission">
+       <select class="login-select" name="gid">
           {% for i in groups %}
             <option value="{{i['g_id']}}">{{i['g_name']}}</option>
           {% endfor %}
@@ -34,9 +35,9 @@
 
         <center>
 
-         <select class="login-select" name="permission">
+         <select class="login-select" name="names">
           {% for i in users %}
-            <option value="{{i['id']}}">{{i['first_name']}}</option>
+            <option value="{{i['email']}}">{{i['first_name']}}</option>
           {% endfor %}
         </select>
         <br>
