@@ -19,6 +19,21 @@ def addUser(gid, email):
 	cur.execute(sql,data)
 	db.commit()
 	db.close()
+def getUserGroups(email):
+	db,cur = connect()
+	sql = "SELECT *  FROM user_groups WHERE email = %s"
+	cur.execute(sql,email)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	gid = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		gid.append(r)
+	return gid
+
 	
 
 def deleteUser(gid,email):
