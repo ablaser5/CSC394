@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Connects to the database and returns the database object with the cursor
 def connect():
 	# Open database connection
-	db = pymysql.connect("localhost","root","Elfrida123!","csc394" ) # EDIT THIS TO FIT YOUR CONFIG
+	db = pymysql.connect("localhost","root","Qpalzm11@","csc394" ) # EDIT THIS TO FIT YOUR CONFIG
 	# prepare a cursor object using cursor() method
 	cursor = db.cursor()
 	return db, cursor
@@ -12,6 +12,22 @@ def connect():
 def getColumns(cursor):
 	columns = [item[0] for item in cursor.description]
 	return columns
+def addUser(gid, email):
+	db,cur = connect()
+	sql = "INSERT INTO user_groups (g_id,email) VALUES (%s,%s)"
+	data = [gid,email]
+	cur.execute(sql,data)
+	db.commit()
+	db.close()
+	
+
+def deleteUser(gid,email):
+	db,cur = connect()
+	sql = "DELETE  FROM user_groups WHERE email = %s"
+	data = [email]
+	cur.execute(sql,data)
+	db.commit()
+	db.close()
 
 def getCurrentUser(user_hash, email = None):
 	db,cur = connect()
@@ -124,7 +140,22 @@ def currentUser(user_hash):
 		return user
 	else:
 		return None
-
+def getAllUsers():
+	db, cur = connect()
+	sql = """
+			SELECT * FROM users
+		  """
+	cur.execute(sql)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	users = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		users.append(r)
+	return users
 def getAllPermissions():
 	db, cur = connect()
 	sql = """

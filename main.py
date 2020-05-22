@@ -6,7 +6,7 @@ from flask_mail import Mail, Message
 from project.database import connect, verifyUser, checkUser,\
 							alreadyAnUser, isUnverified, getCurrentUser, \
 							getUserPermission, currentUser, getAllPermissions, \
-							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups
+							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser
 from project.forms import loadForm, checkEmptyForm
 
 app = Flask(__name__)
@@ -40,15 +40,41 @@ def index():
 def groups():
 	form_dict = {}
 	user = session['user_hash']
+	user = getCurrentUser(user)
+	users = getAllUsers()
+
 	if request.method == 'POST':
 		# Get data from form
-		print(request.form)
-		form_dict = request.form['sub']
-		names = getUsersByGroups(form_dict);
-		return render_template('grouplist.html', team = names)
+		if "team" in request.form:
+			groups = getAllGroups()
+			sql = "INSERT INTO groups (g_name,owner) VALUES (%s, %s)"
+			data = [request.form['team'],user['first_name']]
+			db, cursor = connect()
+			try:
+				cursor.execute(sql, data)
+				db.commit()
+				db.close()
+			except Exception as e:
+				errors.append("Exception found: " + str(e))
+			groups = getAllGroups()
+			return render_template('groups.html', groups = groups, users = users)
+		if "addusers" in request.form:
+			groups = getAllGroups()
+			print(request.form['gid'])
+			deleteUser(request.form['gid'],request.form['names'])
+			addUser(request.form['gid'],request.form['names'])
+			users = getAllUsers()
+			groups = getAllGroups()
+			return render_template('groups.html', groups = groups, users = users)
+		else:
+			print(request.form)
+			form_dict = request.form['sub']
+			names = getUsersByGroups(form_dict);
+			return render_template('grouplist.html', team = names)
+		
 	
 	groups = getAllGroups()
-	return render_template('groups.html', groups = groups)
+	return render_template('groups.html', groups = groups, users = users)
 
 
 @app.route('/register', methods=['POST', 'GET'])

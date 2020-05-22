@@ -6,7 +6,7 @@
 {% block content %}
  
     <span><h3>Teams</h3></span>
-    <form action="" method="POST" name="groups">
+    
       <div> 
          <center><img src = "static/assets/KonnectLogos.png">
          </center>
@@ -17,11 +17,45 @@
        <form action="" method="POST" name="groups">
         <div id="input-holder">
         <button type = "submit" name ="sub" value="{{i['g_id']}}" > {{i['g_name']}} </button>
-        </div>
-        {% endfor %}
-      </center>
-     
+      </div>
     </form>
-  
+      {% endfor %}
+      </center>
 
+      <center>
+        <h3> Add user to a team </h3>
+
+        <form action="" method="POST" name="groups">
+       <select class="login-select" name="gid">
+          {% for i in groups %}
+            <option value="{{i['g_id']}}">{{i['g_name']}}</option>
+          {% endfor %}
+        </select>
+        </center>
+
+        <center>
+
+         <select class="login-select" name="names">
+          {% for i in users %}
+            <option value="{{i['email']}}">{{i['first_name']}}</option>
+          {% endfor %}
+        </select>
+        <br>
+        <input name = "addusers" type="submit" value="Submit">
+        </form> 
+      </center>
+
+      <center>
+        <h3> Create a Team </h3>
+      <form action="" method="POST" name="groups">
+        <label for="team">Create a Team:</label><br>
+        <input type="text" id="team" name="team" value=""><br><br>
+        <input name = "team" type="submit" value="Submit">
+      </form> 
+    </center>
+     
+  
+  
+<a href="/home">Home</a><br>
+<a href="/logout">Logout</a>
 {% endblock %}
