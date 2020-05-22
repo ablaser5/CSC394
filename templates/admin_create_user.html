@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Admin - Create User{% endblock %}
 {% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_create_user.css') }}">
+
   {{ super() }}
 {% endblock %}
 {% block content %}
