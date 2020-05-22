@@ -6,7 +6,7 @@ from flask_mail import Mail, Message
 from project.database import connect, verifyUser, checkUser,\
 							alreadyAnUser, isUnverified, getCurrentUser, \
 							getUserPermission, currentUser, getAllPermissions, \
-							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser
+							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups
 from project.forms import loadForm, checkEmptyForm
 
 app = Flask(__name__)
@@ -60,8 +60,17 @@ def groups():
 			return render_template('groups.html', groups = groups, users = users)
 		if "addusers" in request.form:
 			groups = getAllGroups()
-			print(request.form['gid'])
-			deleteUser(request.form['gid'],request.form['names'])
+			gids = getUserGroups(request.form['names'])
+			
+			for i in gids:
+				print(request.form['gid'])
+				print(i['g_id'])
+				if int(request.form['gid']) == int(i['g_id']):
+					users = getAllUsers()
+					groups = getAllGroups()
+					print("was already in that group")
+					return render_template('groups.html', groups = groups, users = users)
+			
 			addUser(request.form['gid'],request.form['names'])
 			users = getAllUsers()
 			groups = getAllGroups()
