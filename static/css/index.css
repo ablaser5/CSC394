@@ -52,10 +52,6 @@ th {
 	margin-top: 50px;
 }
 
-/* #submit {
-	width: 304px;
-} */
-
 .error {
 	color: red;
 }
@@ -68,12 +64,3 @@ span h3 {
 	text-align: center;
 }
 
-.home-button {
-	width: 200px;
-	height: 30px;
-	line-height: 30px;
-	text-align: center;
-	margin-top: 10px;
-	border-radius: 3px;
-	border: 1px solid black;
-}
