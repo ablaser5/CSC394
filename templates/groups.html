@@ -3,61 +3,63 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/groups.css') }}">
 
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
- 
-    <span><h3>Teams</h3></span>
-    
-      <div> 
-         <center><img src = "static/assets/KonnectLogos.png">
-         </center>
-      </div>
-
-     <center> <h4> List of Teams </h4>
-      {% for i in groups %} 
-       <form action="" method="POST" name="groups">
+<div id="form">
+  <div id="header">
+    <h1>Teams</h1>
+    <center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+    </center>
+  </div>
+  <div id="main">
+    <center>
+      <h4> List of Teams </h4>
+      {% for i in groups %}
+      <form action="" method="POST" name="groups">
         <div id="input-holder">
-        <button type = "submit" name ="sub" value="{{i['g_id']}}" > {{i['g_name']}} </button>
-      </div>
-    </form>
+          <button type="submit" name="sub" value="{{i['g_id']}}"> {{i['g_name']}} </button>
+        </div>
+      </form>
       {% endfor %}
-      </center>
+    </center>
 
-      <center>
-        <h3> Add user to a team </h3>
+    <center>
+      <h3> Add user to a team </h3>
 
-        <form action="" method="POST" name="groups">
-       <select class="login-select" name="gid">
+      <form action="" method="POST" name="groups">
+        <select class="login-select" name="gid">
           {% for i in groups %}
-            <option value="{{i['g_id']}}">{{i['g_name']}}</option>
+          <option value="{{i['g_id']}}">{{i['g_name']}}</option>
           {% endfor %}
         </select>
-        </center>
+    </center>
 
-        <center>
+    <center>
 
-         <select class="login-select" name="names">
-          {% for i in users %}
-            <option value="{{i['email']}}">{{i['first_name']}}</option>
-          {% endfor %}
-        </select>
-        <br>
-        <input name = "addusers" type="submit" value="Submit">
-        </form> 
-      </center>
+      <select class="login-select" name="names">
+        {% for i in users %}
+        <option value="{{i['email']}}">{{i['first_name']}}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <input name="addusers" type="submit" value="Submit">
+      </form>
+    </center>
 
-      <center>
-        <h3> Create a Team </h3>
+    <center>
+      <h3> Create a Team </h3>
       <form action="" method="POST" name="groups">
         <label for="team">Create a Team:</label><br>
         <input type="text" id="team" name="team" value=""><br><br>
-        <input name = "team" type="submit" value="Submit">
-      </form> 
+        <input name="team" type="submit" value="Submit">
+      </form>
     </center>
-     
-  
-  
-<a href="/home">Home</a><br>
-<a href="/logout">Logout</a>
+  </div>
+
+  <div id="footer">
+    <a href="/home">Back</a><br>
+    <a href="/logout">Logout</a>
+  </div>
+</div>
 {% endblock %}

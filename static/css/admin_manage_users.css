@@ -1,0 +1,39 @@
+#form {
+    overflow: none;
+    width: 800px;
+    height: 700px;
+    border-radius: 5px;
+    border: 1px solid black;
+    margin: auto;
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-between;
+    background-color: lightgray;
+    flex-direction: column;
+  }
+  
+  #header {
+    height: 120px;
+    background-color: #02054d;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  #footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+  }
+  
+  #taskonnect {
+    margin: 10px;
+  }
+  
+  h1 {
+    color: white;
+    margin: 10px;
+  }
+  
