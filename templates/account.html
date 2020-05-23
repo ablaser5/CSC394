@@ -3,24 +3,36 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/account.css') }}">
 
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
+<div id="form">
+	<div id="header">
+		<h1>My Account</h1>
+		<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+		</center>
+	</div>
+	<div>
+		<center><img id="user-icon" src="static/assets/user-icon.png">
+		</center>
+	</div>
+	<div id="main">
+		<div id="left-form">
+			{% for key in user %}
+			<p>{{ key }}</p>
+			{% endfor %}
+		</div>
+		<div id="right-form">
+			{% for key in user %}
+			<input type="text" name="first_name" value={{user[key]}} class="input">
+			{% endfor %}
+		</div>
+	</div>
+	<div id="footer">
+		<a href="/home">Back</a><br>
+		<a href="/logout">Logout</a>
+	</div>
 
-	User is Logged In: {{ user['user_hash'] }} <br>
-	User Permission: {{ user['permission'] }}
-
-	<h1>My Account</h1>
-
-	<table>
-		{% for key in user %}
-		<tr>
-			<th>{{ key }}</th>
-			<td>{{ user[key] }}</td>
-		</tr>
-		{% endfor %}
-	</table>
-	<a href="/home">Home</a><br>
-	<a href="/logout">Logout</a>
+</div>
 
 {% endblock %}
