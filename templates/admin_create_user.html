@@ -10,10 +10,14 @@
 	User is Logged In: {{ user['user_hash'] }} <br>
 	User Permission: {{ user['permission'] }}
 
-	<h1>Admin - Invite User</h1>
-
-	<div id="regform">
-		<span><h3>Invite User</h3></span>
+	<div id="form">
+		<div id="header">
+			<h1>Admin - Invite User</h1>
+			<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+			</center>
+		</div>
+		<div id="main">
+			<span><h3>Invite User</h3></span>
 		<form action="" method="POST" name="create_user">
 			<div id="input-holder">
 				{% for error in errors %}
@@ -36,8 +40,12 @@
 				<input type="submit" name="submit" class="login-input" id="submit">
 			</div>
 		</form>
+		</div>
+		<div id="footer">
+			<a href="/home">Back</a><br>
+			<a href="/logout">Logout</a>
+		</div>
 	</div>
-	<a href="/home">Home</a><br>
-	<a href="/logout">Logout</a>
+
 
 {% endblock %}

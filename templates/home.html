@@ -3,42 +3,51 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
 
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
+<div id="form">
+	<div id="first-form">
 
-	User is Logged In: {{ user['user_hash'] }} <br>
-	User Permission: {{ user['permission'] }}
+		<div id="user-info">
+			<center><img id="user-icon" src="static/assets/user-icon.png">
+			</center>
+			<!-- <p>User is Logged In: {{ user['user_hash'] }}</p> -->
+			<p>User is Logged In: {{ user['first_name'] }}</p>
 
-	{% for message in messages %}
-		<p class="error">{{ message }}</p>
-	{% endfor %}
+			<p>User Permission: {{ user['permission'] }}</p>
 
-	<div class="home-button">
-		<a href="/account">My Account</a>
-	</div>
-	<div class="home-button">
-		<a href="/kanban">KanBan</a>
-	</div>
-	<div class="home-button">
-		<a href="/">Archive</a>
-	</div>
-	<div class="home-button">
-		<a href="/groups">Groups</a>
-	</div>
-
-	{% if user['permission'] == 'administrator' %}
-		<div class="home-button">
-			<a href="/admin_create_user">Create User</a>
+			{% for message in messages %}
+			<p class="error">{{ message }}</p>
+			{% endfor %}
 		</div>
-	{% endif %}
 
-	{% if user['permission'] == 'administrator' %}
-		<div class="home-button">
-			<a href="/admin_manage_users">Manage Users</a>
+		<div id="button-container">
+			<a class="button" href="/account">My Account</a>
+			<a class="button" href="/kanban">KanBan</a>
+			<a class="button" href="/">Archive</a>
+			<a class="button" href="/groups">Groups</a>
+
+			{% if user['permission'] == 'administrator' %}
+			<a class="button" href="/admin_create_user">Create User</a>
+			{% endif %}
+
+			{% if user['permission'] == 'administrator' %}
+			<a class="button" href="/admin_manage_users">Manage Users</a>
+			{% endif %}
 		</div>
-	{% endif %}
-	
-	<a href="/logout">Logout</a>
+
+		<div id="logout-container">
+			<a id="logout" href="/logout">Logout</a>
+		</div>
+	</div>
+	<div id="accent-color-form"></div>
+	<div id="second-form">
+		<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+		</center>
+	</div>
+</div>
+
+
 
 {% endblock %}
