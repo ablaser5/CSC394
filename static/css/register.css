@@ -8,10 +8,21 @@
     background-color: lightgray;
 }
 
-#submit {
-    background-color: #3354FF;
+#input-holder {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #submit {
+    background-color: #3354ff;
     color: white;
     width: 30%;
-    text-align: center;
     height: 100%;
-}
+  }
+  
+  #input-holder .button-container {
+    justify-content: flex-end;
+    display: flex;
+  }
+  
+
