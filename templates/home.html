@@ -26,13 +26,10 @@
 			<a class="button" href="/account">My Account</a>
 			<a class="button" href="/kanban">KanBan</a>
 			<a class="button" href="/">Archive</a>
+
+			{% if user['permission'] == 'administrator' %}
 			<a class="button" href="/groups">Groups</a>
-
-			{% if user['permission'] == 'administrator' %}
 			<a class="button" href="/admin_create_user">Create User</a>
-			{% endif %}
-
-			{% if user['permission'] == 'administrator' %}
 			<a class="button" href="/admin_manage_users">Manage Users</a>
 			{% endif %}
 		</div>
