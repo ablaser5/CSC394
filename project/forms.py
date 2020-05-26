@@ -14,4 +14,4 @@ def checkEmptyForm(d):
 	for key in d:
 		if d[key] == '' or d[key] == ' ':
 			errors += 1
-	return errors == 0
+	return errors > 0
