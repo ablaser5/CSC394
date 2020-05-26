@@ -38,7 +38,8 @@ def getCurrentUser(user_hash, email = None):
 				U.last_name as last_name,
 				P.permission_name as permission,
 				U.user_hash as user_hash,
-				U.verified as verified
+				U.verified as verified,
+				U.organization as organization
 			FROM users U
 			JOIN permissions P
 				ON P.id = U.permission_id
@@ -173,12 +174,12 @@ def getAllPermissions():
 		permissions.append(r)
 	return permissions
 
-def getAllGroups():
+def getAllGroups(user_hash):
 	db, cur = connect()
 	sql = """
-			SELECT * FROM groups;
+			SELECT * FROM groups WHERE owner = %s;
 		  """
-	cur.execute(sql)
+	cur.execute(sql, user_hash)
 	results = cur.fetchall()
 	columns = getColumns(cur)
 	db.close()
@@ -189,6 +190,7 @@ def getAllGroups():
 			r[col] = val
 		groups.append(r)
 	return groups
+	
 def getUsersByGroups(gid):
 	db, cur = connect()
 	sql = """
