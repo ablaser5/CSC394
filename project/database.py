@@ -19,9 +19,10 @@ def addUser(gid, user_hash):
 	cur.execute(sql,data)
 	db.commit()
 	db.close()
+
 def getUserGroups(user_hash):
 	db,cur = connect()
-	sql = "SELECT *  FROM user_groups WHERE user = %s"
+	sql = "SELECT *  FROM user_groups UG JOIN groups G ON G.g_id = UG.g_id WHERE UG.user = %s"
 	cur.execute(sql,user_hash)
 	results = cur.fetchall()
 	columns = getColumns(cur)
@@ -33,6 +34,85 @@ def getUserGroups(user_hash):
 			r[col] = val
 		gid.append(r)
 	return gid
+
+def getKanbanCards(group_id, category):
+	db,cur = connect()
+	sql = """
+			SELECT 
+				*,
+				C.id as card_id 
+			FROM cards C
+			JOIN users U
+				ON U.user_hash = C.assigned_to
+			WHERE C.group_id = %s AND C.kanban_category = %s
+		  """
+	cur.execute(sql,[group_id, category])
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	cards = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		cards.append(r)
+	return cards
+
+def getKanbanCard(card_id):
+	db,cur = connect()
+	sql = """
+			SELECT 
+				*,
+				C.id as card_id 
+			FROM cards C
+			JOIN users U
+				ON U.user_hash = C.assigned_to
+			WHERE C.id = %s
+		  """
+	cur.execute(sql,[card_id])
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		return r
+	return None
+
+def moveKanbanCard(card_id, destination):
+	db,cur = connect()
+	sql = """
+			UPDATE
+				cards
+			SET
+				kanban_category = %s
+			WHERE id = %s
+		  """
+	cur.execute(sql, [destination, card_id])
+	db.commit()
+	db.close()
+
+def getGroupMembers(group_id):
+	db,cur = connect()
+	sql = """
+			SELECT *
+			FROM user_groups UG
+			JOIN users U
+				ON U.user_hash = UG.user
+			WHERE UG.g_id = %s
+		  """
+	cur.execute(sql, group_id)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	members = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		members.append(r)
+	return members
 
 def deleteUser(gid,user_hash):
 	db,cur = connect()

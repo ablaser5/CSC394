@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kanban.css') }}">
+{{ super() }}
+{% endblock %}
+{% block content %}
+	<script type="text/javascript">
+		$(function() {
+		    $( "#due-date" ).datepicker({ dateFormat: 'yy-mm-dd' });
+		});
+	</script>
+	User is Logged In: {{ user['user_hash'] }} <br>
+	User Permission: {{ user['permission'] }}
+
+	<h1>Add Kanban Card</h1>
+	{% for error in errors %}
+	  <p class="error">{{ error }}</p>
+	{% endfor %}
+	{% for s in success %}
+	  <p class="success">{{ s }}</p>
+	{% endfor %}
+	<div id="addcard">
+		<form action="" method="POST" name="addcard">
+			<label for="assigned_to">Assign Card To:</label>
+			<select name="assigned_to">
+				<option value="">-- Pick Member --</option>
+				{% for member in members %}
+				<option value="{{member['user_hash']}}">{{member['first_name']}} {{member['last_name']}}</option>
+				{% endfor %}
+			</select><br>
+			<input type="text" name="title" placeholder="Card Title"><br>
+			<textarea name='description' placeholder="Description"></textarea><br>
+			<label for="kanban_category">Board Category:</label>
+			<select name="kanban_category">
+
+				{% if category == 'todo' %}
+				<option selected value="todo">To Do</option>
+				{% else %}
+				<option value="todo">To Do</option>
+				{% endif %}
+
+				{% if category == 'inprogress' %}
+				<option selected value="inprogress">In Progress</option>
+				{% else %}
+				<option value="inprogress">In Progress</option>
+				{% endif %}
+
+				{% if category == 'complete' %}
+				<option selected value="completed">Completed</option>
+				{% else %}
+				<option value="completed">Completed</option>
+				{% endif %}
+
+			</select><br>
+			<input type="text" name="due_date" id="due-date" placeholder="Due Date"><br>
+			<label for="completed">Completed:</label>
+			<select name="completed">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</select><br>
+			<input type="submit" name="submit">
+		</form>
+	</div>
+	
+
+
+	<a href="/kanban">Return to Kanban</a><br>
+	<a href="/home">Home</a><br>
+	<a href="/logout">Logout</a>
+
+{% endblock %}

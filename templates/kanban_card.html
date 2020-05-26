@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kanban.css') }}">
+{{ super() }}
+{% endblock %}
+{% block content %}
+	User is Logged In: {{ user['user_hash'] }} <br>
+	User Permission: {{ user['permission'] }}
+
+	<h1>Kanban Card: #{{ card['card_id'] }}</h1>
+
+	{% for error in errors %}
+	  <p class="error">{{ error }}</p>
+	{% endfor %}
+	{% for s in success %}
+	  <p class="success">{{ s }}</p>
+	{% endfor %}
+
+	{% for key in card %}
+		{{key}} : {{ card[key] }} <br>
+	{% endfor %}
+	
+	<a href="/kanban">Return to Kanban</a><br>
+	<a href="/home">Home</a><br>
+	<a href="/logout">Logout</a>
+
+{% endblock %}
