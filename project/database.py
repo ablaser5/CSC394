@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Connects to the database and returns the database object with the cursor
 def connect():
 	# Open database connection
-	db = pymysql.connect("localhost","root","Qpalzm11@","csc394" ) # EDIT THIS TO FIT YOUR CONFIG
+	db = pymysql.connect("localhost","root","Elfrida123!","csc394" ) # EDIT THIS TO FIT YOUR CONFIG
 	# prepare a cursor object using cursor() method
 	cursor = db.cursor()
 	return db, cursor
@@ -203,11 +203,28 @@ def getAllGroups(user_hash):
 			r[col] = val
 		groups.append(r)
 	return groups
-	
+
+def getUserHash(id):
+	db, cur = connect()
+	sql = """
+			SELECT user_hash FROM users where id = %s
+		  """
+	cur.execute(sql, id)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	userHash = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		userHash.append(r)
+	return userHash
+
 def getUsersByGroups(gid):
 	db, cur = connect()
 	sql = """
-			SELECT first_name, last_name FROM users  inner join user_groups on
+			SELECT first_name, last_name, g_id, id FROM users  inner join user_groups on
  			user_groups.user = users.user_hash 
 			where g_id = 
 		  """ 

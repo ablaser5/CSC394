@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mail import Mail, Message
-
+from ast import literal_eval as make_tuple
 # Packages In our project
 from project.database import connect, verifyUser, checkUser,\
 							alreadyAnUser, isUnverified, getCurrentUser, \
 							getUserPermission, currentUser, getAllPermissions, \
-							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups
+							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups,getUserHash
 from project.forms import loadForm, checkEmptyForm
 
 app = Flask(__name__)
@@ -36,6 +36,10 @@ def index():
 			return redirect(url_for('login'))
 	except Exception as e:
 		return redirect(url_for('login'))
+
+app.route('/grouplist', methods=['POST', 'GET'])
+def grouplist():
+	print("here")
 @app.route('/groups', methods=['POST', 'GET'])
 def groups():
 	form_dict = {}
@@ -47,6 +51,7 @@ def groups():
 	groups = getAllGroups(user['user_hash'])
 	if request.method == 'POST':
 		# Get data from form
+		print(request.form)
 		if "team" in request.form:
 			sql = "INSERT INTO groups (g_name,owner) VALUES (%s, %s)"
 			data = [request.form['team'],user['user_hash']]
@@ -80,7 +85,6 @@ def groups():
 			success.append("Successfully Added User to Group")
 			return render_template('groups.html', groups = groups, users = users, errors=errors, success=success)
 		else:
-			print(request.form)
 			form_dict = request.form['sub']
 			names = getUsersByGroups(form_dict);
 			return render_template('grouplist.html', team = names)
@@ -88,6 +92,33 @@ def groups():
 	
 	return render_template('groups.html', groups = groups, users = users, errors=errors, success=success)
 
+
+
+@app.route('/grouplist', methods=['POST', 'GET'])
+def grouplist():
+	errors = []
+	success = []
+	print("here")
+
+	tupes = (request.form['names'].split(","))
+	print(tupes)
+	print (tupes[0])
+	hashs  = getUserHash(tupes[2])
+	print(hashs)
+
+	sql = "DELETE FROM user_groups WHERE g_id = %s and user = %s"
+	data = [tupes[0],hashs[0]['user_hash']]
+	db, cursor = connect()
+	try:
+		cursor.execute(sql, data)
+		db.commit()
+		db.close()
+		print("deleeted")
+		success.append("Successfully Created Group")
+	except Exception as e:
+		errors.append("Exception found: " + str(e))
+	names = getUsersByGroups(tupes[0]);
+	return render_template('grouplist.html', team = names)
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
