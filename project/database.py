@@ -283,11 +283,28 @@ def getAllGroups(user_hash):
 			r[col] = val
 		groups.append(r)
 	return groups
-	
+
+def getUserHash(id):
+	db, cur = connect()
+	sql = """
+			SELECT user_hash FROM users where id = %s
+		  """
+	cur.execute(sql, id)
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	userHash = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		userHash.append(r)
+	return userHash
+
 def getUsersByGroups(gid):
 	db, cur = connect()
 	sql = """
-			SELECT first_name, last_name FROM users  inner join user_groups on
+			SELECT first_name, last_name, g_id, id FROM users  inner join user_groups on
  			user_groups.user = users.user_hash 
 			where g_id = 
 		  """ 
