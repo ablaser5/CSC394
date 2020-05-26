@@ -12,17 +12,17 @@ def connect():
 def getColumns(cursor):
 	columns = [item[0] for item in cursor.description]
 	return columns
-def addUser(gid, email):
+def addUser(gid, user_hash):
 	db,cur = connect()
-	sql = "INSERT INTO user_groups (g_id,email) VALUES (%s,%s)"
-	data = [gid,email]
+	sql = "INSERT INTO user_groups (g_id,user) VALUES (%s,%s)"
+	data = [gid,user_hash]
 	cur.execute(sql,data)
 	db.commit()
 	db.close()
-def getUserGroups(email):
+def getUserGroups(user_hash):
 	db,cur = connect()
-	sql = "SELECT *  FROM user_groups WHERE email = %s"
-	cur.execute(sql,email)
+	sql = "SELECT *  FROM user_groups WHERE user = %s"
+	cur.execute(sql,user_hash)
 	results = cur.fetchall()
 	columns = getColumns(cur)
 	db.close()
@@ -34,12 +34,10 @@ def getUserGroups(email):
 		gid.append(r)
 	return gid
 
-	
-
-def deleteUser(gid,email):
+def deleteUser(gid,user_hash):
 	db,cur = connect()
-	sql = "DELETE  FROM user_groups WHERE email = %s"
-	data = [email]
+	sql = "DELETE  FROM user_groups WHERE user = %s"
+	data = [user_hash]
 	cur.execute(sql,data)
 	db.commit()
 	db.close()
@@ -210,7 +208,7 @@ def getUsersByGroups(gid):
 	db, cur = connect()
 	sql = """
 			SELECT first_name, last_name FROM users  inner join user_groups on
- 			user_groups.email = users.email 
+ 			user_groups.user = users.user_hash 
 			where g_id = 
 		  """ 
 	sql += gid

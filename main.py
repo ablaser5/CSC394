@@ -56,6 +56,7 @@ def groups():
 				db.commit()
 				db.close()
 				success.append("Successfully Created Group")
+				groups = getAllGroups(user['user_hash'])
 			except Exception as e:
 				errors.append("Exception found: " + str(e))
 			
