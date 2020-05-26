@@ -8,7 +8,7 @@ from project.database import connect, verifyUser, checkUser,\
 							getUserPermission, currentUser, getAllPermissions, \
 							getAllPositions, getSiteURL, getColumns, getAllGroups, \
 							getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups, \
-							getGroupMembers, getKanbanCards, getKanbanCard, moveKanbanCard
+							getGroupMembers, getKanbanCards, getKanbanCard, moveKanbanCard, \
 							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups,getUserHash
 
 from project.forms import loadForm, checkEmptyForm
