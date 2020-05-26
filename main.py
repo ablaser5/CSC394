@@ -39,27 +39,28 @@ def index():
 @app.route('/groups', methods=['POST', 'GET'])
 def groups():
 	form_dict = {}
+	errors = []
+	success = []
 	user = session['user_hash']
 	user = getCurrentUser(user)
 	users = getAllUsers()
-
+	groups = getAllGroups(user['user_hash'])
 	if request.method == 'POST':
 		# Get data from form
 		if "team" in request.form:
-			groups = getAllGroups()
 			sql = "INSERT INTO groups (g_name,owner) VALUES (%s, %s)"
-			data = [request.form['team'],user['first_name']]
+			data = [request.form['team'],user['user_hash']]
 			db, cursor = connect()
 			try:
 				cursor.execute(sql, data)
 				db.commit()
 				db.close()
+				success.append("Successfully Created Group")
 			except Exception as e:
 				errors.append("Exception found: " + str(e))
-			groups = getAllGroups()
-			return render_template('groups.html', groups = groups, users = users)
+			
+			return render_template('groups.html', groups = groups, users = users, errors=errors, success=success)
 		if "addusers" in request.form:
-			groups = getAllGroups()
 			gids = getUserGroups(request.form['names'])
 			
 			for i in gids:
@@ -67,14 +68,16 @@ def groups():
 				print(i['g_id'])
 				if int(request.form['gid']) == int(i['g_id']):
 					users = getAllUsers()
-					groups = getAllGroups()
-					print("was already in that group")
-					return render_template('groups.html', groups = groups, users = users)
+					errors.append("was already in that group")
+					return render_template('groups.html', groups = groups, users = users, errors=errors, success=success)
 			
+
+			print(request.form['gid'])
+			deleteUser(request.form['gid'],request.form['names'])
 			addUser(request.form['gid'],request.form['names'])
 			users = getAllUsers()
-			groups = getAllGroups()
-			return render_template('groups.html', groups = groups, users = users)
+			success.append("Successfully Added User to Group")
+			return render_template('groups.html', groups = groups, users = users, errors=errors, success=success)
 		else:
 			print(request.form)
 			form_dict = request.form['sub']
@@ -82,8 +85,7 @@ def groups():
 			return render_template('grouplist.html', team = names)
 		
 	
-	groups = getAllGroups()
-	return render_template('groups.html', groups = groups, users = users)
+	return render_template('groups.html', groups = groups, users = users, errors=errors, success=success)
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -104,7 +106,6 @@ def register():
 		form_dict = loadForm(form_dict)
 		# Make sure fields are not empty
 		noErrors = checkEmptyForm(form_dict)
-		print(noErrors)
 		if noErrors:
 			email = form_dict['email']
 			first_name = form_dict['first_name']
@@ -116,6 +117,7 @@ def register():
 			position_id = 1
 
 			user_hash = generate_password_hash(str(email) + str(first_name) + str(last_name) + str(password))
+			organization = generate_password_hash(str(user_hash))
 
 			# Validate As Needed
 			if form_dict['password'] != confirm_password:
@@ -125,8 +127,8 @@ def register():
 				errors.append("There is already an user with that email address.")
 			# If no errors, proceed with database interaction
 			if len(errors) == 0:
-				sql = "INSERT INTO users (email, first_name, last_name, password, permission_id, position_id, user_hash, verified) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-				data = [email, first_name, last_name, password, perm, position_id, user_hash, 0]
+				sql = "INSERT INTO users (email, first_name, last_name, password, permission_id, position_id, user_hash, verified, organization) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+				data = [email, first_name, last_name, password, perm, position_id, user_hash, 0, organization]
 				db, cursor = connect()
 				try:
 					cursor.execute(sql, data)
@@ -239,8 +241,8 @@ def admin_create_user():
 		permission = form_dict['permission']
 		position = form_dict['position']
 		user_hash = generate_password_hash(str(email) + str(permission) + str(position))
-		sql = "INSERT INTO users (email, permission_id, position_id, user_hash, verified) VALUES (%s, %s, %s, %s, %s)"
-		data = [email, permission, position, user_hash, 0]
+		sql = "INSERT INTO users (email, permission_id, position_id, user_hash, verified, organization) VALUES (%s, %s, %s, %s, %s, %s)"
+		data = [email, permission, position, user_hash, 0, user['organization']]
 		db, cursor = connect()
 		cursor.execute(sql, data)
 		db.commit()
