@@ -6,7 +6,9 @@ from flask_mail import Mail, Message
 from project.database import connect, verifyUser, checkUser,\
 							alreadyAnUser, isUnverified, getCurrentUser, \
 							getUserPermission, currentUser, getAllPermissions, \
-							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups
+							getAllPositions, getSiteURL, getColumns, getAllGroups, \
+							getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups, \
+							getGroupMembers, getKanbanCards, getKanbanCard, moveKanbanCard
 from project.forms import loadForm, checkEmptyForm
 
 app = Flask(__name__)
@@ -222,10 +224,77 @@ def account():
 def kanban():
 	user = session['user_hash']
 	user = currentUser(user)
+	kanbans = {}
 	if user:
-		return render_template('kanban.html', user=user)
+		user_groups = getUserGroups(user['user_hash'])
+		for group in user_groups:
+			members = getGroupMembers(group['g_id'])
+			kanbans[group['g_id']] = {}
+			kanbans[group['g_id']]['members'] = members
+			kanbans[group['g_id']]['title'] = group['g_name']
+			kanbans[group['g_id']]['cards'] = {}
+			kanbans[group['g_id']]['cards']['todo'] = getKanbanCards(group['g_id'], 'todo')
+			kanbans[group['g_id']]['cards']['inprogress'] = getKanbanCards(group['g_id'], 'inprogress')
+			kanbans[group['g_id']]['cards']['complete'] = getKanbanCards(group['g_id'], 'complete')
+
+		return render_template('kanban.html', user=user, kanbans=kanbans)
 	else:
 		return redirect(url_for('login'))
+
+@app.route('/kanban/card/<card_number>', methods=['POST', 'GET'])
+def kanban_card(card_number):
+	user = session['user_hash']
+	user = currentUser(user)
+	success = []
+	errors = []
+	if user:
+		card = getKanbanCard(card_number)
+		return render_template('kanban_card.html', user=user, errors=errors, success=success, card=card)
+	else:
+		return redirect(url_for('login'))
+
+@app.route('/kanban/card/move', methods=['POST', 'GET'])
+def kanban_move_card():
+	card_id = request.args.get('card')
+	destination = request.args.get('destination')
+	moveKanbanCard(card_id, destination)
+	return redirect(url_for('kanban'))
+
+@app.route('/kanban/add_card', methods=['POST', 'GET'])
+def kanban_add_card():
+	user = session['user_hash']
+	user = currentUser(user)
+	group_id = request.args.get('group')
+	category = request.args.get('category')
+	members = getGroupMembers(group_id)
+	form_dict = {}
+	errors = []
+	success = []
+
+	if request.method == 'POST':
+		form_dict = loadForm(form_dict)
+		empty = checkEmptyForm(form_dict)
+
+		if empty:
+			errors.append("There are empty fields! Please Complete")
+		else:
+			db,cur = connect()
+			sql = "INSERT INTO cards (title, description, assigned_to, kanban_category, group_id, completed, owner, due_date) VALUES (%s, %s,%s, %s,%s, %s,%s,%s)"
+			title = form_dict['title']
+			description = form_dict['description']
+			assigned_to = form_dict['assigned_to']
+			kanban_category = form_dict['kanban_category']
+			due_date = form_dict['due_date']
+			completed =form_dict['completed']
+			owner = user['user_hash']
+			cur.execute(sql, [title, description, assigned_to, kanban_category, group_id, completed, owner, due_date])
+			db.commit()
+			db.close()
+			success.append("Successfully Added a Card")
+
+	return render_template('kanban_add_card.html', user=user, members=members, category=category, errors=errors, success=success)
+
+
 
 @app.route('/admin_create_user', methods=['POST', 'GET'])
 def admin_create_user():
