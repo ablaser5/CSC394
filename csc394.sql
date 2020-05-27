@@ -16,6 +16,64 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `card_comments`
+--
+
+DROP TABLE IF EXISTS `card_comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `card_comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `card_id` int(11) DEFAULT NULL,
+  `user` varchar(256) DEFAULT NULL,
+  `comment` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `card_comments`
+--
+
+LOCK TABLES `card_comments` WRITE;
+/*!40000 ALTER TABLE `card_comments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `card_comments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cards`
+--
+
+DROP TABLE IF EXISTS `cards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `assigned_to` varchar(256) DEFAULT NULL,
+  `kanban_category` varchar(50) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `date_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_completed` date DEFAULT NULL,
+  `completed` int(1) DEFAULT NULL,
+  `owner` varchar(256) DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cards`
+--
+
+LOCK TABLES `cards` WRITE;
+/*!40000 ALTER TABLE `cards` DISABLE KEYS */;
+INSERT INTO `cards` VALUES (4,'New Card','testing','pbkdf2:sha256:150000$T144MT4K$30f71cf00a26083351e4ed2e135259715a535980bb271c38efd3a18b5a0d12f9','inprogress',15,'2020-05-27 20:30:30',NULL,0,'pbkdf2:sha256:150000$T144MT4K$30f71cf00a26083351e4ed2e135259715a535980bb271c38efd3a18b5a0d12f9','2020-06-01');
+/*!40000 ALTER TABLE `cards` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `config`
 --
 
@@ -51,7 +109,7 @@ CREATE TABLE `groups` (
   `g_name` varchar(50) NOT NULL,
   `owner` varchar(256) NOT NULL,
   PRIMARY KEY (`g_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,7 +118,7 @@ CREATE TABLE `groups` (
 
 LOCK TABLES `groups` WRITE;
 /*!40000 ALTER TABLE `groups` DISABLE KEYS */;
-INSERT INTO `groups` VALUES (13,'Group1','pbkdf2:sha256:150000$RIqrvkII$84d19d45eb351e522750d68c5177095004065911b350e28ced94e0d556b5b9f9');
+INSERT INTO `groups` VALUES (15,'Group1','pbkdf2:sha256:150000$T144MT4K$30f71cf00a26083351e4ed2e135259715a535980bb271c38efd3a18b5a0d12f9');
 /*!40000 ALTER TABLE `groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,36 +220,8 @@ CREATE TABLE `user_groups` (
 
 LOCK TABLES `user_groups` WRITE;
 /*!40000 ALTER TABLE `user_groups` DISABLE KEYS */;
-INSERT INTO `user_groups` VALUES (13,'pbkdf2:sha256:150000$RIqrvkII$84d19d45eb351e522750d68c5177095004065911b350e28ced94e0d556b5b9f9');
+INSERT INTO `user_groups` VALUES (15,'pbkdf2:sha256:150000$T144MT4K$30f71cf00a26083351e4ed2e135259715a535980bb271c38efd3a18b5a0d12f9'),(15,'pbkdf2:sha256:150000$ykJlvhfH$e01cb51f8841987874131b709bef97c3f212df7cf57d65980275c4fc6deb099a');
 /*!40000 ALTER TABLE `user_groups` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user_projects`
---
-
-DROP TABLE IF EXISTS `user_projects`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_projects` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `project_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `project_id` (`project_id`),
-  CONSTRAINT `user_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `user_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_projects`
---
-
-LOCK TABLES `user_projects` WRITE;
-/*!40000 ALTER TABLE `user_projects` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_projects` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -218,7 +248,7 @@ CREATE TABLE `users` (
   KEY `position_id` (`position_id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `users_ibfk_2` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +257,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (68,'ablaser6@comcast.net','Aaron','Blaser','pbkdf2:sha256:150000$QcPJHK3i$4fc91b71c9371ff61d3be2f7c75357615e79ca0c22960e3c667ca7941cd63b78',1,1,'pbkdf2:sha256:150000$RIqrvkII$84d19d45eb351e522750d68c5177095004065911b350e28ced94e0d556b5b9f9',0,'pbkdf2:sha256:150000$IANffxPz$29e3a8605b5e9c1eb0bb702c89deeed9b8a6c42c63408758c95ea4b3aa292aea'),(69,'ablaser5@comcast.net','Aaron','Blaser','pbkdf2:sha256:150000$Lx9h4M3t$1a02eabfa52a36b00019a326be90d64368cc55174aaa185da83a594e0aef3a45',2,5,'pbkdf2:sha256:150000$5TUocZvU$034b1beace54d4cf8b7421563e51e65a3cc95b41c20a1538d3119144ab60dce7',1,'pbkdf2:sha256:150000$IANffxPz$29e3a8605b5e9c1eb0bb702c89deeed9b8a6c42c63408758c95ea4b3aa292aea');
+INSERT INTO `users` VALUES (73,'ablaser6@comcast.net','Aaron','Blaser','pbkdf2:sha256:150000$o1OR6FQS$747e394aa45ca0ba71da75695cf6e321c0a8cc782427f54efe6ca30f1c8d7144',1,1,'pbkdf2:sha256:150000$T144MT4K$30f71cf00a26083351e4ed2e135259715a535980bb271c38efd3a18b5a0d12f9',0,'pbkdf2:sha256:150000$HrmsiKmH$7aec96f2dc2217aebb675873eb27718c82a780fd5c6134dd355fc000e1c895b2'),(74,'ablaser5@comcast.net','Aaron','Blaser','pbkdf2:sha256:150000$v0BQzPvL$bade4f1f8ec19ae255965e5a262a0d2f0606089c1c66cf31fd478fe46d046cda',2,5,'pbkdf2:sha256:150000$ykJlvhfH$e01cb51f8841987874131b709bef97c3f212df7cf57d65980275c4fc6deb099a',1,'pbkdf2:sha256:150000$HrmsiKmH$7aec96f2dc2217aebb675873eb27718c82a780fd5c6134dd355fc000e1c895b2');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -240,4 +270,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-25 19:44:26
+-- Dump completed on 2020-05-27 18:55:09
