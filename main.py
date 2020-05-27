@@ -286,6 +286,27 @@ def kanban_card(card_number):
 	else:
 		return redirect(url_for('login'))
 
+@app.route('/kanban/card/edit', methods=['POST', 'GET'])
+def kanban_card_edit():
+	form_dict = {}
+	form_dict = loadForm(form_dict)
+	form_dict['completed'] = '1' if len(request.form.getlist('completed')) > 0 else '0'
+	sql = """
+			UPDATE cards
+			SET
+				title = %s,
+				description = %s,
+				completed = %s,
+				due_date = %s
+			WHERE id = %s
+		  """
+	data = [form_dict['title'], form_dict['description'], form_dict['completed'], form_dict['due_date'], form_dict['card_id']]
+	db,cur = connect()
+	cur.execute(sql, data)
+	db.commit()
+	db.close()
+	return redirect('/kanban/card/' + str(form_dict['card_id']))
+
 @app.route('/kanban/card/move', methods=['POST', 'GET'])
 def kanban_move_card():
 	card_id = request.args.get('card')
