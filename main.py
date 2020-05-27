@@ -107,8 +107,8 @@ def register():
 		# Get data from form
 		form_dict = loadForm(form_dict)
 		# Make sure fields are not empty
-		noErrors = checkEmptyForm(form_dict)
-		if noErrors:
+		empty = checkEmptyForm(form_dict)
+		if not empty:
 			email = form_dict['email']
 			first_name = form_dict['first_name']
 			last_name = form_dict['last_name']
