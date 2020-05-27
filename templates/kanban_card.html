@@ -16,10 +16,52 @@
 	{% for s in success %}
 	  <p class="success">{{ s }}</p>
 	{% endfor %}
+	<form action="/kanban/card/edit" method="POST" name="updateCard">
+		<div class="card-body">
+			{% for key in card %}
+				
+				{% if key == 'title' %}
+					<label for="{{ key }}"></label><input type="text" name="{{ key }}" value="{{ card[key] }}"><br>
+				{% endif %}
 
-	{% for key in card %}
-		{{key}} : {{ card[key] }} <br>
-	{% endfor %}
+				{% if key == 'description' %}
+					<textarea name="{{ key }}">{{ card[key] }}</textarea><br>
+				{% endif %}
+
+				{% if key == 'completed' %}
+					{% if card[key] == 0 %}
+						<label for="{{ key }}"></label>Completed: <input type="checkbox" name="{{ key }}" value="0"><br>
+					{% else %}
+						<label for="{{ key }}"></label>Completed: <input type="checkbox" name="{{ key }}" value="1" checked><br>
+					{% endif %}
+				{% endif %}
+
+				{% if key == 'first_name' %}
+					<p>Assigned to: {{ card[key] }}</p><br>
+				{% endif %}
+
+				{% if key == 'due_date' %}
+					<script type="text/javascript">
+						$(function() {
+						    $( "#{{ key }}" ).datepicker({ dateFormat: 'yy-mm-dd' });
+						});
+					</script>
+					<label for="{{ key }}">Due Date: </label><input type="text" name="{{ key }}" id="{{ key }}" value="{{ card[key] }}"><br>
+				{% endif %}
+
+				{% if key == 'card_id' %}
+					<input type="hidden" name="{{ key }}" value="{{ card[key] }}">
+				{% endif %}
+				
+			{% endfor %}
+			<input type="submit" name="submit" value="Update Card">
+		</div>
+	</form>
+
+	<!-- <h4>Comments</h4>
+	<div id="card-comments">
+		
+	</div> -->
 	
 	<a href="/kanban">Return to Kanban</a><br>
 	<a href="/home">Home</a><br>
