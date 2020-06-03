@@ -3,78 +3,106 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kanban.css') }}">
 
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
 
-	User is Logged In: {{ user['user_hash'] }} <br>
-	User Permission: {{ user['permission'] }}
+<div id="form">
+	<div id="header">
+		<h1>KanBan</h1>
+		<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+		</center>
+	</div>
+	<div id="first-form">
 
-	<h1>KanBan</h1>
+		{% for kanban in kanbans %}
+		<div class="kanban">
+			<p id="kanban-group">Group: {{kanbans[kanban]['title']}}</p>
+			{% for member in kanbans[kanban]['members'] %}
+			<div class="members">
+				{{member['first_name']}}
+			</div>
+			{% endfor %}
+			<div class="board">
+				<div class="board-function">
+					<div class="board-function-header">To Do<a href="/kanban/add_card?category=todo&group={{kanban}}">
+							<div class="add-card">+</div>
+						</a></div>
+					<div class="board-function-body">
+						{% for card in kanbans[kanban]['cards']['todo'] %}
+						<div class="kanban-card">
+							<div class="kanban-card-title">{{ card['title'] }}</div>
+							<p>Assigned To: {{ card['first_name'] }}</p>
+							<p>Due Date: {{ card['due_date'] }}</p>
+							<p>Description: {{ card['description'] }}</p>
+							<a href="/kanban/card/{{card['card_id']}}">
+								<div class="card-button">View Card</div>
+							</a>
+							<a href="/kanban/card/move?card={{card['card_id']}}&destination=inprogress">
+								<div class="move-card">></div>
+							</a>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="board-function">
+					<div class="board-function-header">In Progress<a
+							href="/kanban/add_card?category=inprogress&group={{kanban}}">
+							<div class="add-card">+</div>
+						</a></div>
+					<div class="board-function-body">
+						{% for card in kanbans[kanban]['cards']['inprogress'] %}
+						<div class="kanban-card">
+							<div class="kanban-card-title">{{ card['title'] }}</div>
+							<p>Assigned To: {{ card['first_name'] }}</p>
+							<p>Due Date: {{ card['due_date'] }}</p>
+							<p>Description: {{ card['description'] }}</p>
+							<a href="/kanban/card/{{card['card_id']}}">
+								<div class="card-button">View Card</div>
+							</a>
+							<a href="/kanban/card/move?card={{card['card_id']}}&destination=complete">
+								<div class="move-card">></div>
+							</a>
+							<a href="/kanban/card/move?card={{card['card_id']}}&destination=todo">
+								<div class="move-card">
+									<< /div>
+							</a>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="board-function">
+					<div class="board-function-header">Complete<a
+							href="/kanban/add_card?category=complete&group={{kanban}}">
+							<div class="add-card">+</div>
+						</a></div>
+					<div class="board-function-body">
+						{% for card in kanbans[kanban]['cards']['complete'] %}
+						<div class="kanban-card">
+							<div class="kanban-card-title">{{ card['title'] }}</div>
+							<p>Assigned To: {{ card['first_name'] }}</p>
+							<p>Due Date: {{ card['due_date'] }}</p>
+							<p>Description: {{ card['description'] }}</p>
+							<a href="/kanban/card/{{card['card_id']}}">
+								<div class="card-button">View Card</div>
+							</a>
+							<a href="/kanban/card/move?card={{card['card_id']}}&destination=inprogress">
+								<div class="move-card">
+									<< /div>
+							</a>
+						</div>
 
-	{% for kanban in kanbans %}
-	<div class="kanban">
-		<p id="kanban-group">Group: {{kanbans[kanban]['title']}}</p>
-		{% for member in kanbans[kanban]['members'] %}
-		<div class="members">
-			{{member['first_name']}}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
 		</div>
 		{% endfor %}
-		<div class="board">
-			<div class="board-function">
-				<div class="board-function-header">To Do<a href="/kanban/add_card?category=todo&group={{kanban}}"><div class="add-card">+</div></a></div>
-				<div class="board-function-body">
-					{% for card in kanbans[kanban]['cards']['todo'] %}
-						<div class="kanban-card">
-							<div class="kanban-card-title">{{ card['title'] }}</div>
-							<p>Assigned To: {{ card['first_name'] }}</p>
-							<p>Due Date: {{ card['due_date'] }}</p>
-							<p>Description: {{ card['description'] }}</p>
-							<a href="/kanban/card/{{card['card_id']}}"><div class="card-button">View Card</div></a>
-							<a href="/kanban/card/move?card={{card['card_id']}}&destination=inprogress"><div class="move-card">></div></a>
-						</div>
-					{% endfor %}
-				</div>
-			</div>
-			<div class="board-function">
-				<div class="board-function-header">In Progress<a href="/kanban/add_card?category=inprogress&group={{kanban}}"><div class="add-card">+</div></a></div>
-				<div class="board-function-body">
-					{% for card in kanbans[kanban]['cards']['inprogress'] %}
-						<div class="kanban-card">
-							<div class="kanban-card-title">{{ card['title'] }}</div>
-							<p>Assigned To: {{ card['first_name'] }}</p>
-							<p>Due Date: {{ card['due_date'] }}</p>
-							<p>Description: {{ card['description'] }}</p>
-							<a href="/kanban/card/{{card['card_id']}}"><div class="card-button">View Card</div></a>
-							<a href="/kanban/card/move?card={{card['card_id']}}&destination=complete"><div class="move-card">></div></a>
-							<a href="/kanban/card/move?card={{card['card_id']}}&destination=todo"><div class="move-card"><</div></a>
-						</div>
-					{% endfor %}
-				</div>
-			</div>
-			<div class="board-function">
-				<div class="board-function-header">Complete<a href="/kanban/add_card?category=complete&group={{kanban}}"><div class="add-card">+</div></a></div>
-				<div class="board-function-body">
-					{% for card in kanbans[kanban]['cards']['complete'] %}
-						<div class="kanban-card">
-							<div class="kanban-card-title">{{ card['title'] }}</div>
-							<p>Assigned To: {{ card['first_name'] }}</p>
-							<p>Due Date: {{ card['due_date'] }}</p>
-							<p>Description: {{ card['description'] }}</p>
-							<a href="/kanban/card/{{card['card_id']}}"><div class="card-button">View Card</div></a>
-							<a href="/kanban/card/move?card={{card['card_id']}}&destination=inprogress"><div class="move-card"><</div></a>
-						</div>
-
-					{% endfor %}
-				</div>
-			</div>
-		</div>
 	</div>
-	{% endfor %}
-
-
-
-	<a href="/home">Home</a><br>
-	<a href="/logout">Logout</a>
+	<div id="footer">
+		<a href="/home">Back</a><br>
+		<a href="/logout">Logout</a>
+	</div>
+</div>
 
 {% endblock %}
