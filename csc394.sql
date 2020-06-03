@@ -27,6 +27,7 @@ CREATE TABLE `card_comments` (
   `card_id` int(11) DEFAULT NULL,
   `user` varchar(256) DEFAULT NULL,
   `comment` varchar(500) DEFAULT NULL,
+  'rating' int(1), 
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -59,6 +60,8 @@ CREATE TABLE `cards` (
   `completed` int(1) DEFAULT NULL,
   `owner` varchar(256) DEFAULT NULL,
   `due_date` date DEFAULT NULL,
+  'archived' int(1) DEFAULT NULL,
+  'rating' int(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -69,7 +72,7 @@ CREATE TABLE `cards` (
 
 LOCK TABLES `cards` WRITE;
 /*!40000 ALTER TABLE `cards` DISABLE KEYS */;
-INSERT INTO `cards` VALUES (4,'New Card','testing','pbkdf2:sha256:150000$T144MT4K$30f71cf00a26083351e4ed2e135259715a535980bb271c38efd3a18b5a0d12f9','inprogress',15,'2020-05-27 20:30:30',NULL,0,'pbkdf2:sha256:150000$T144MT4K$30f71cf00a26083351e4ed2e135259715a535980bb271c38efd3a18b5a0d12f9','2020-06-01');
+INSERT INTO `cards` VALUES (4,'New Card','testing','pbkdf2:sha256:150000$T144MT4K$30f71cf00a26083351e4ed2e135259715a535980bb271c38efd3a18b5a0d12f9','inprogress',15,'2020-05-27 20:30:30',NULL,0,'pbkdf2:sha256:150000$T144MT4K$30f71cf00a26083351e4ed2e135259715a535980bb271c38efd3a18b5a0d12f9','2020-06-01',0,10);
 /*!40000 ALTER TABLE `cards` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Connects to the database and returns the database object with the cursor
 def connect():
 	# Open database connection
-	db = pymysql.connect("localhost","root","Qpalzm11@","csc394" ) # EDIT THIS TO FIT YOUR CONFIG
+	db = pymysql.connect("localhost","root","Deedeedee132!@#","CSC394" ) # EDIT THIS TO FIT YOUR CONFIG
 	# prepare a cursor object using cursor() method
 	cursor = db.cursor()
 	return db, cursor
@@ -44,7 +44,7 @@ def getKanbanCards(group_id, category):
 			FROM cards C
 			JOIN users U
 				ON U.user_hash = C.assigned_to
-			WHERE C.group_id = %s AND C.kanban_category = %s
+			WHERE C.group_id = %s AND C.kanban_category = %s AND C.archived = 0
 		  """
 	cur.execute(sql,[group_id, category])
 	results = cur.fetchall()
@@ -67,7 +67,7 @@ def getKanbanCard(card_id):
 			FROM cards C
 			JOIN users U
 				ON U.user_hash = C.assigned_to
-			WHERE C.id = %s
+			WHERE C.id = %s AND C.archived = 0
 		  """
 	cur.execute(sql,[card_id])
 	results = cur.fetchall()
@@ -92,6 +92,79 @@ def moveKanbanCard(card_id, destination):
 	cur.execute(sql, [destination, card_id])
 	db.commit()
 	db.close()
+
+def getArchivedCards(group_id, category):
+	db,cur = connect()
+	sql = """
+			SELECT 
+				*,
+				C.id as card_id 
+			FROM cards C
+			JOIN users U
+				ON U.user_hash = C.assigned_to
+			WHERE C.group_id = %s AND C.kanban_category = %s AND C.archived = 1
+		  """
+	cur.execute(sql,[group_id, category])
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	cards = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		cards.append(r)
+	return cards
+
+def getArchivedCard(card_id):
+	db,cur = connect()
+	sql = """
+			SELECT 
+				*,
+				C.id as card_id 
+			FROM cards C
+			JOIN users U
+				ON U.user_hash = C.assigned_to
+			WHERE C.id = %s AND C.archived = 1
+		  """
+	cur.execute(sql,[card_id])
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		return r
+	return None
+	
+def archiveKanbanCard(card_id):
+	db,cur = connect()
+	sql = """
+			UPDATE
+				cards
+			SET
+				archived = 1
+			WHERE id = %s
+		  """
+	cur.execute(sql, [card_id])
+	db.commit()
+	db.close()
+
+"""
+def addCardComment(card_id):
+	db,cur = connect()
+	sql = 
+			UPDATE
+				card_comments
+			SET
+				s
+			WHERE id = %s
+		
+	cur.execute(sql, [card_id])
+	db.commit()
+	db.close()
+"""
 
 def getGroupMembers(group_id):
 	db,cur = connect()
