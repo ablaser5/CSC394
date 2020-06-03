@@ -291,18 +291,16 @@ def kanban_card_edit():
 	form_dict = {}
 	form_dict = loadForm(form_dict)
 	form_dict['completed'] = '1' if len(request.form.getlist('completed')) > 0 else '0'
-	form_dict['archived'] = '1' if len(request.form.getlist('archived')) > 0 else '0'
 	sql = """
 			UPDATE cards
 			SET
 				title = %s,
 				description = %s,
 				completed = %s,
-				due_date = %s,
-				archived = %s
+				due_date = %s
 			WHERE id = %s
 		  """
-	data = [form_dict['title'], form_dict['description'], form_dict['completed'], form_dict['due_date'], form_dict['card_id'], form_dict['archived']]
+	data = [form_dict['title'], form_dict['description'], form_dict['completed'], form_dict['due_date'], form_dict['card_id']]
 	db,cur = connect()
 	cur.execute(sql, data)
 	db.commit()
@@ -335,7 +333,7 @@ def kanban_add_card():
 			errors.append("There are empty fields! Please Complete")
 		else:
 			db,cur = connect()
-			sql = "INSERT INTO cards (title, description, assigned_to, kanban_category, group_id, completed, owner, due_date, archived, rating) VALUES (%s, %s,%s, %s,%s, %s,%s,%s,%s,%s)"
+			sql = "INSERT INTO cards (title, description, assigned_to, kanban_category, group_id, completed, owner, due_date) VALUES (%s, %s,%s, %s,%s, %s,%s,%s)"
 			title = form_dict['title']
 			description = form_dict['description']
 			assigned_to = form_dict['assigned_to']
@@ -343,42 +341,14 @@ def kanban_add_card():
 			due_date = form_dict['due_date']
 			completed =form_dict['completed']
 			owner = user['user_hash']
-			archived = form_dict['archived']
-			rating = form_dict['rating']
-			cur.execute(sql, [title, description, assigned_to, kanban_category, group_id, completed, owner, due_date, archived, rating])
+			cur.execute(sql, [title, description, assigned_to, kanban_category, group_id, completed, owner, due_date])
 			db.commit()
 			db.close()
 			success.append("Successfully Added a Card")
 
-	return render_template('kanban_add_card.html', user=user, errors=errors, success=success)
+	return render_template('kanban_add_card.html', user=user, members=members, category=category, errors=errors, success=success)
 
-@app.route('/kanban/card/comment', methods=['POST', 'GET'])
-def kanban_add_comment():
-	user = session['user_hash']
-	user = currentUser(user)
-	card_id = request.args.get('id')
-	form_dict = {}
-	errors = []
-	success = []
-	
-	if request.method == 'POST':
-		form_dict = loadForm(form_dict)
-		empty = checkEmptyForm(form_dict)
-		
-		if empty:
-			errors.append("There are empty fields! Please Complete")
-		else:
-			db,cur = connect()
-			sql = "INSERT INTO card_comments (card_id, user, comment, rating) VALUES (%s, %s, %s, %s)"
-			user = user['user_hash']
-			comment = form_dict['comment']
-			rating = form_dict['rating']
-			cur.execute(sql, [card_id, user, comment, rating]
-			db.commit()
-			db.close()
-			success.append("Successfully Added Comment")
-			
-	return render_template('kanban_add_comment.html' user=user, members=members, category=category, errors=errors, success=sucess)
+
 
 @app.route('/admin_create_user', methods=['POST', 'GET'])
 def admin_create_user():
