@@ -27,7 +27,7 @@ CREATE TABLE `card_comments` (
   `card_id` int(11) DEFAULT NULL,
   `user` varchar(256) DEFAULT NULL,
   `comment` varchar(500) DEFAULT NULL,
-  'rating' int(1), 
+  `rating` int(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -60,8 +60,8 @@ CREATE TABLE `cards` (
   `completed` int(1) DEFAULT NULL,
   `owner` varchar(256) DEFAULT NULL,
   `due_date` date DEFAULT NULL,
-  'archived' int(1) DEFAULT NULL,
-  'rating' int(1) DEFAULT NULL,
+  `archived` int(1) DEFAULT NULL,
+  `rating` int(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
