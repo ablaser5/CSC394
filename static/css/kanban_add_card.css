@@ -12,6 +12,10 @@
   flex-direction: column;
 }
 
+#first-form {
+  margin-left: 325px;
+}
+
 #header {
   height: 120px;
   background-color: #02054d;

@@ -8,7 +8,7 @@
 
 <div id="form">
 	<div id="header">
-		<h1>KanBan</h1>
+		<h1>Add Kanban Card</h1>
 		<center><img id="user-icon" src="static/assets/user-icon.png">
 		</center>
 	</div>
@@ -18,10 +18,7 @@
 				$("#due-date").datepicker({ dateFormat: 'yy-mm-dd' });
 			});
 		</script>
-		User is Logged In: {{ user['user_hash'] }} <br>
-		User Permission: {{ user['permission'] }}
 
-		<h1>Add Kanban Card</h1>
 		{% for error in errors %}
 		<p class="error">{{ error }}</p>
 		{% endfor %}
