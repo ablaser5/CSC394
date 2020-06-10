@@ -344,7 +344,7 @@ def kanban_add_card():
 			completed =form_dict['completed']
 			owner = user['user_hash']
 			archived = form_dict['archived']
-			rating = form_dict['rating']
+			#rating = form_dict['rating']
 			cur.execute(sql, [title, description, assigned_to, kanban_category, group_id, completed, owner, due_date, archived, rating])
 			db.commit()
 			db.close()
@@ -352,7 +352,7 @@ def kanban_add_card():
 
 	return render_template('kanban_add_card.html', user=user, errors=errors, success=success)
 
-@app.route('/kanban/card/comment', methods=['POST', 'GET'])
+@app.route('/kanban/card/comment/<card_number>', methods=['POST', 'GET'])
 def kanban_add_comment():
 	user = session['user_hash']
 	user = currentUser(user)
@@ -379,6 +379,57 @@ def kanban_add_comment():
 			success.append("Successfully Added Comment")
 			
 	return render_template('kanban_add_comment.html' user=user, members=members, category=category, errors=errors, success=sucess)
+
+@app.route('/archive', methods['POST','GET'])
+def kanban_archive():
+	user = session['user_hash']
+	user = currentUser(user)
+	archives = {}
+	if user:
+		user_groups = getUserGroups(user['user_hash'])
+		for group in user_groups:
+			members = getGroupMembers(group['g_id'])
+			archives[group['g_id']] = {}
+			archives[group['g_id']]['members'] = members
+			archives[group['g_id']]['title'] = group['g_name']
+			archives[group['g_id']]['cards'] = {}
+			#archives[group['g_id']]['cards']['archived'] = getArchivedCards(group['g_id'], 'archived')
+			#archives[group['g_id']]['cards']['todo'] = getArchivedCards(group['g_id'], 'todo')
+			#archives[group['g_id']]['cards']['inprogress'] = getArchivedCards(group['g_id'], 'inprogress')
+			#archives[group['g_id']]['cards']['complete'] = getArchivedCards(group['g_id'], 'complete')
+			#archives[group['g_id']]['card_comments']['ratings'] = getArchivedCards(group['g_id'], 'ratings')
+			#archives[group['g_id']]['card_comments']['user'] = getArchivedCards(group['g_id'], 'user')
+			#archives[group['g_id']]['card_comments']['comments'] = getArchivedCards(group['g_id'], 'comments')
+
+		return render_template('archive.html', user=user, archives=archives)
+	else:
+		return redirect(url_for('login'))
+	
+
+@app.route('/archive/<card_number>', methods['POST','GET'])
+def kanban_archive_card():
+	user = session['user_hash']
+	user = currentUser(user)
+	success = []
+	errors = []
+	archives = {}
+	if user:
+		user_groups = getUserGroups(user['user_hash'])
+		for group in user_groups:
+			members = getGroupMembers(group['g_id'])
+			card = getArchivedCard(card_number)
+			archives[group['g_id']] = {}
+			archives[group['g_id']]['cards'] = {}
+			archives[group['g_id']]['card_comments'] = {}
+			archives[group['g_id']]['cards']['ratings'] = getArchivedCard(group['g_id'], 'rating')
+			archives[group['g_id']]['card_comments']['user'] = getArchivedCard(group['g_id'], 'user')
+			archives[group['g_id']]['card_comments']['rating'] = getArchivedCard(group['g_id'], 'ratings')
+			archives[group['g_id']]['card_comments']['comments'] = getArchivedCard(group['g_id'], 'comments')
+			
+		return render_template('archived_card.html', user=user, errors=errors, success=success, card=card, archives=archives)
+	else:
+		return redirect(url_for('login'))
+	
 
 @app.route('/admin_create_user', methods=['POST', 'GET'])
 def admin_create_user():

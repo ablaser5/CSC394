@@ -121,7 +121,7 @@ def getArchivedCard(card_id):
 	sql = """
 			SELECT 
 				*,
-				C.id as card_id 
+				C.id as card_id
 			FROM cards C
 			JOIN users U
 				ON U.user_hash = C.assigned_to
