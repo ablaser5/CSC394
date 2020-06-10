@@ -39,15 +39,15 @@ h1 {
 
 #comment-section {
   width: 400px;
-  height: 400px;
+  height: 360px;
   border: 1px solid black;
   position: relative;
-  overflow: auto;
 }
 
 .comments {
   width: 100%;
   height: calc(100% - 100px);
+  overflow: auto;
 }
 
 .submit-comments {
