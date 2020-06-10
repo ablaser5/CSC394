@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kanban_card.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kanban.css') }}">
+{{ super() }}
+{% endblock %}
+{% block content %}
+<h2>Archives</h2>
+
+{% for card in cards %}
+	{% if card['archived'] == 1 %}
+	<div class="kanban-card" style="border: 1px solid black; border-radius: 3px;">
+		<div class="kanban-card-title">{{ card['title'] }}</div>
+		<p>Assigned To: {{ card['first_name'] }}</p>
+		<p>Due Date: {{ card['due_date'] }}</p>
+		<p>Description: {{ card['description'] }}</p>
+	</div>
+	{% endif %}
+{% endfor %}
+
+{% endblock %}

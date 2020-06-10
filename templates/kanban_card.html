@@ -55,6 +55,19 @@
 				<label for="{{ key }}">Due Date: </label><input type="text" name="{{ key }}" id="{{ key }}"
 					value="{{ card[key] }}"><br>
 				{% endif %}
+				{% if key == 'archived' %}
+				<label for="archived">Archived: </label>
+				<select name="archived">
+					{% if card[key] == 1 %}
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+					{% endif %}
+					{% if card[key] == 0 %}
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+					{% endif %}
+				</select><br>
+				{% endif %}
 
 				{% if key == 'card_id' %}
 				<input type="hidden" name="{{ key }}" value="{{ card[key] }}">

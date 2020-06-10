@@ -39,9 +39,10 @@ h1 {
 
 #comment-section {
   width: 400px;
-  height: 450px;
+  height: 400px;
   border: 1px solid black;
   position: relative;
+  overflow: auto;
 }
 
 .comments {
@@ -61,3 +62,4 @@ h1 {
   border: 1px solid gray;
   text-align: left;
 }
+
