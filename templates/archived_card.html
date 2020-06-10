@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/archive.css') }}">
+{{ super() }}
+{% endblock %}
+{% block content %}
+	User is Logged In: {{ user['user_hash'] }} <br>
+	User Permission: {{ user['permission'] }}
+
+	<h1>Archived Card: #{{ card['card_id'] }}</h1>
+
+	{% for error in errors %}
+	  <p class="error">{{ error }}</p>
+	{% endfor %}
+	{% for s in success %}
+	  <p class="success">{{ s }}</p>
+	{% endfor %}
+	<div class="card-body">
+		{% for key in card %}
+				
+			{% if key == 'title' %}
+				<p>Title: {{ card[key] }}</p><br>
+			{% endif %}
+
+			{% if key == 'description' %}
+				<p>Description: {{ card[key] }}</p><br>
+			{% endif %}
+
+			{% if key == 'first_name' %}
+				<p>Assigned to: {{ card[key] }}</p><br>
+			{% endif %}
+
+			{% if key == 'rating' %}
+				<p>Rating: {{ card[key] }}</p><br>
+			{% endif %}
+
+			{% if key == 'card_id' %}
+				<input type="hidden" name="{{ key }}" value="{{ card[key] }}">
+			{% endif %}
+				
+		{% endfor %}
+	</div>
+
+	<!-- <h4>Comments</h4>
+	<div id="card-comments">
+		
+	</div> -->
+	
+	<a href="/archive">Return to Archive</a><br>
+	<a href="/home">Home</a><br>
+	<a href="/logout">Logout</a>
+
+{% endblock %}

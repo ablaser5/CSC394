@@ -36,6 +36,15 @@
 					{% endif %}
 				{% endif %}
 
+				{% if key == 'archived' %}
+					{% if card[key] == 0 %}
+						<label for="{{ key }}"></label>Archived: <input type="checkbox" name="{{ key }}" value="0"><br>
+					{% else %}
+						<label for="{{ key }}"></label>Archived: <input type="checkbox" name="{{ key }}" value="1" checked><br>
+					{% endif %}
+				{% endif %}
+
+
 				{% if key == 'first_name' %}
 					<p>Assigned to: {{ card[key] }}</p><br>
 				{% endif %}

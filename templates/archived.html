@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/archive.css') }}">
+
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+	User is Logged In: {{ user['user_hash'] }} <br>
+	User Permission: {{ user['permission'] }}
+
+	<h1>Archive</h1>
+
+	{% for archive in archives %}
+	<div class="archive">
+		<p id="archive-group">Group: {{archives[archive]['title']}}</p>
+		{% for member in archives[archive]['members'] %}
+		<div class="members">
+			{{member['first_name']}}
+		</div>
+		{% endfor %}
+		<div class="board">
+			<div class="board-function">
+				<div class="board-function-body">
+					{% for card in archives[archive]['cards']['archived'] %}
+						<div class="archive-card">
+							<div class="archive-card-title">{{ card['title'] }}</div>
+							<p>Assigned To: {{ card['first_name'] }}</p>
+							<p>Description: {{ card['description'] }}</p>
+							<p>Rating: {{ card['rating'] }}</p>
+							<a href="/archive/card/{{card['card_id']}}"><div class="card-button">View Card</div></a>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+
+
+	<a href="/home">Home</a><br>
+	<a href="/logout">Logout</a>
+
+{% endblock %}

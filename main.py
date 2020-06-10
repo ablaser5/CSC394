@@ -373,12 +373,12 @@ def kanban_add_comment():
 			user = user['user_hash']
 			comment = form_dict['comment']
 			rating = form_dict['rating']
-			cur.execute(sql, [card_id, user, comment, rating]
+			cur.execute(sql, [card_id, user, comment, rating])
 			db.commit()
 			db.close()
 			success.append("Successfully Added Comment")
 			
-	return render_template('kanban_add_comment.html' user=user, members=members, category=category, errors=errors, success=sucess)
+	return render_template('kanban_add_comment.html', user=user, members=members, category=category, errors=errors, success=sucess)
 
 @app.route('/archive', methods['POST','GET'])
 def kanban_archive():
