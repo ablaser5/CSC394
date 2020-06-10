@@ -9,7 +9,7 @@ from project.database import connect, verifyUser, checkUser,\
 							getAllPositions, getSiteURL, getColumns, getAllGroups, \
 							getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups, \
 							getGroupMembers, getKanbanCards, getKanbanCard, moveKanbanCard, \
-							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups,getUserHash, getKanbanCardComments
+							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups,getUserHash, getKanbanCardComments, getCardsByGroup
 
 from project.forms import loadForm, checkEmptyForm
 
@@ -183,6 +183,19 @@ def register():
 			errors.append('There are empty fields in the form.')
 	return render_template('register.html', current_data=None, errors=errors, success=success)
 
+@app.route('/archives', methods= ['POST', 'GET'])
+def archives():
+	user = session['user_hash']
+	user = getCurrentUser(user)
+	cards = []
+	if user:
+		groups = getUserGroups(user['user_hash'])
+		for g in groups:
+			for c in getCardsByGroup(g['g_id']):
+				cards.append(c)
+
+	return render_template('archives.html', cards = cards)
+
 @app.route('/user', methods= ['POST', 'GET'])
 def user():
 	user = session['user_hash']
@@ -321,7 +334,8 @@ def kanban_card_edit():
 				archived = %s
 			WHERE id = %s
 		  """
-	data = [form_dict['title'], form_dict['description'], form_dict['completed'], form_dict['due_date'], form_dict['card_id'], form_dict['archived']]
+
+	data = [form_dict['title'], form_dict['description'], form_dict['completed'], form_dict['due_date'], form_dict['archived'], form_dict['card_id']]
 	db,cur = connect()
 	cur.execute(sql, data)
 	db.commit()
@@ -354,7 +368,7 @@ def kanban_add_card():
 			errors.append("There are empty fields! Please Complete")
 		else:
 			db,cur = connect()
-			sql = "INSERT INTO cards (title, description, assigned_to, kanban_category, group_id, completed, owner, due_date, archived, rating) VALUES (%s, %s,%s, %s,%s, %s,%s,%s,%s,%s)"
+			sql = "INSERT INTO cards (title, description, assigned_to, kanban_category, group_id, completed, owner, due_date, archived) VALUES (%s, %s,%s, %s,%s, %s,%s,%s,%s)"
 			title = form_dict['title']
 			description = form_dict['description']
 			assigned_to = form_dict['assigned_to']
@@ -362,9 +376,10 @@ def kanban_add_card():
 			due_date = form_dict['due_date']
 			completed =form_dict['completed']
 			owner = user['user_hash']
+
 			archived = form_dict['archived']
 			#rating = form_dict['rating']
-			cur.execute(sql, [title, description, assigned_to, kanban_category, group_id, completed, owner, due_date, archived, rating])
+			cur.execute(sql, [title, description, assigned_to, kanban_category, group_id, completed, owner, due_date, 0])
 			db.commit()
 			db.close()
 			success.append("Successfully Added a Card")

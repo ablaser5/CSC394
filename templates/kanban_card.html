@@ -12,7 +12,7 @@
 	<div id="header">
 		<h1>Groups</h1>
 		<h1>Kanban Card: #{{ card['card_id'] }}</h1>
-		<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+		<center><img id="taskonnect" src="{{ url_for('static', filename='assets/KonnectLogos.png') }}">
 		</center>
 	</div>
 	<div id="first-form">
@@ -63,6 +63,19 @@
 				</script>
 				<label for="{{ key }}">Due Date: </label><input type="text" name="{{ key }}" id="{{ key }}"
 					value="{{ card[key] }}"><br>
+				{% endif %}
+				{% if key == 'archived' %}
+				<label for="archived">Archived: </label>
+				<select name="archived">
+					{% if card[key] == 1 %}
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+					{% endif %}
+					{% if card[key] == 0 %}
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+					{% endif %}
+				</select><br>
 				{% endif %}
 
 				{% if key == 'card_id' %}

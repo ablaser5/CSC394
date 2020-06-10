@@ -39,7 +39,7 @@ h1 {
 
 #comment-section {
   width: 400px;
-  height: 450px;
+  height: 360px;
   border: 1px solid black;
   position: relative;
 }
@@ -47,6 +47,7 @@ h1 {
 .comments {
   width: 100%;
   height: calc(100% - 100px);
+  overflow: auto;
 }
 
 .submit-comments {
@@ -61,3 +62,4 @@ h1 {
   border: 1px solid gray;
   text-align: left;
 }
+
