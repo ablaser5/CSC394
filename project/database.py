@@ -80,6 +80,29 @@ def getKanbanCard(card_id):
 		return r
 	return None
 
+def getKanbanCardComments(card_id):
+	db,cur = connect()
+	sql = """
+			SELECT 
+				CC.*,
+				U.first_name
+			FROM card_comments CC
+			JOIN users U
+				ON U.user_hash = CC.user
+			WHERE card_id = %s
+		  """
+	cur.execute(sql,[card_id])
+	results = cur.fetchall()
+	columns = getColumns(cur)
+	db.close()
+	c = []
+	for row in results:
+		r = {}
+		for col,val in zip(columns, list(row)):
+			r[col] = val
+		c.append(r)
+	return c
+
 def moveKanbanCard(card_id, destination):
 	db,cur = connect()
 	sql = """
