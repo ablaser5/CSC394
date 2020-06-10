@@ -35,25 +35,6 @@ def getUserGroups(user_hash):
 		gid.append(r)
 	return gid
 
-def getCardsByGroup(group_id):
-	db,cur = connect()
-	sql = """
-			SELECT *  
-			FROM cards C
-			WHERE C.group_id = %s 
-		  """
-	cur.execute(sql, [group_id])
-	results = cur.fetchall()
-	columns = getColumns(cur)
-	db.close()
-	cards = []
-	for row in results:
-		r = {}
-		for col,val in zip(columns, list(row)):
-			r[col] = val
-		cards.append(r)
-	return cards
-
 def getKanbanCards(group_id, category):
 	db,cur = connect()
 	sql = """
