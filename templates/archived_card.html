@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/archive.css') }}">
+{{ super() }}
+{% endblock %}
+{% block content %}
+	User is Logged In: {{ user['user_hash'] }} <br>
+	User Permission: {{ user['permission'] }}
+
+<div id="form">
+	<div id="header">
+		<h1>Groups</h1>
+		<h1>Archived Card: #{{ card['card_id'] }}</h1>
+		<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+		</center>
+	</div>
+	<div id="first-form">
+		{% for error in errors %}
+		<p class="error">{{ error }}</p>
+		{% endfor %}
+		{% for s in success %}
+		<p class="success">{{ s }}</p>
+		{% endfor %}
+		<form action="/kanban/card/edit" method="POST" name="updateCard">
+			<div class="card-body">
+				{% for key in card %}
+
+				{% if key == 'title' %}
+				<label for="{{ key }}"></label><input type="text" name="{{ key }}" value="{{ card[key] }}"><br>
+				{% endif %}
+
+				{% if key == 'description' %}
+				<textarea name="{{ key }}">{{ card[key] }}</textarea><br>
+				{% endif %}
+
+				{% if key == 'completed' %}
+				{% if card[key] == 0 %}
+				<label for="{{ key }}"></label>Completed: <input type="checkbox" name="{{ key }}" value="0"><br>
+				{% else %}
+				<label for="{{ key }}"></label>Completed: <input type="checkbox" name="{{ key }}" value="1" checked><br>
+				{% endif %}
+				{% endif %}
+
+				{% if key == 'archived' %}
+					{% if card[key] == 0 %}
+						<label for="{{ key }}"></label>Archived: <input type="checkbox" name="{{ key }}" value="0"><br>
+					{% else %}
+						<label for="{{ key }}"></label>Archived: <input type="checkbox" name="{{ key }}" value="1" checked><br>
+					{% endif %}
+				{% endif %}
+
+
+				{% if key == 'first_name' %}
+				<p>Assigned to: {{ card[key] }}</p><br>
+				{% endif %}
+
+				{% if key == 'due_date' %}
+				<script type="text/javascript">
+					$(function () {
+						$("#{{ key }}").datepicker({ dateFormat: 'yy-mm-dd' });
+					});
+				</script>
+				<label for="{{ key }}">Due Date: </label><input type="text" name="{{ key }}" id="{{ key }}"
+					value="{{ card[key] }}"><br>
+				{% endif %}
+
+				{% if key == 'card_id' %}
+				<input type="hidden" name="{{ key }}" value="{{ card[key] }}">
+				{% endif %}
+
+				{% endfor %}
+				<input type="submit" name="submit" value="Update Card">
+			</div>
+		</form>
+		<form action="/kanban/card/comment" method="POST" name="comment">
+			<div id="comment-section">
+				<div class="comments">
+					{% for comment in comments %}
+						<div class="comment">{{ comment['comment'] }}</div>
+					{% endfor %}
+				</div>
+				<div class="submit-comments">
+					{% for key in card %}
+						{% if key == 'card_id' %}
+						<input type="hidden" name="{{ key }}" value="{{ card[key] }}">
+						{% endif %}
+					{% endfor %}
+					<textarea name="comment" placeholder="Add a Comment"></textarea>
+					<input type="submit" name="submit">
+				</div>
+			</div>
+		</form>
+	</div>
+	<div id="footer">
+
+	<!-- <h4>Comments</h4>
+	<div id="card-comments">
+		
+	</div> -->
+	
+	<a href="/archive">Return to Archive</a><br>
+	<a href="/home">Home</a><br>
+	<a href="/logout">Logout</a>
+
+{% endblock %}
