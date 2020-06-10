@@ -399,7 +399,7 @@ def kanban_add_comment():
 			
 	return render_template('kanban_add_comment.html', user=user, members=members, category=category, errors=errors, success=sucess)
 
-@app.route('/archive', methods['POST','GET'])
+@app.route('/archive', methods=['POST','GET'])
 def kanban_archive():
 	user = session['user_hash']
 	user = currentUser(user)
@@ -425,7 +425,7 @@ def kanban_archive():
 		return redirect(url_for('login'))
 	
 
-@app.route('/archive/<card_number>', methods['POST','GET'])
+@app.route('/archive/<card_number>', methods=['POST','GET'])
 def kanban_archive_card():
 	user = session['user_hash']
 	user = currentUser(user)
