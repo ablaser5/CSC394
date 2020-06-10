@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/account.css') }}">
+
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div id="form">
+	<div id="header">
+		<h1>My Account</h1>
+		<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+		</center>
+	</div>
+	<div>
+		<center><img id="user-icon" src="static/assets/user-icon.png">
+		</center>
+	</div>
+	<div id="main">
+		<div id="left-form">
+			{% for key in user %}
+			<p>{{ key }}</p>
+			{% endfor %}
+		</div>
+		<div id="right-form">
+			{% for key in user %}
+			<input type="text" name="first_name" value={{user[key]}} class="input">
+			{% endfor %}
+		</div>
+	</div>
+	<div id="footer">
+		<a href="/home">Back</a><br>
+		<a href="/logout">Logout</a>
+	</div>
+
+</div>
+
+{% endblock %}

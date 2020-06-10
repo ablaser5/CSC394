@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/user.css') }}">
+
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+<div id="form">
+    <span><h3>User Info</h3></span>
+      <div> 
+         <center><img src = "static/assets/KonnectLogos.png">
+         
+      </div>
+      <center>First Name: 
+      <input type="text" name="email" class="user-input" value= {{fname}}>
+      <br>
+      Last Name: 
+      <input type="text" name="email" class="user-input" value= {{lname}}>
+       <br>
+      Email: 
+      <input type="text" name="email" class="user-input" value= {{email}}>
+       <br>
+      Permisson: 
+      <input type="text" name="email" class="user-input" value= {{perm}}>
+      <br>
+      Team: 
+      <input type="text" name="email" class="user-input" value= "need to fill in team later">
+      <center>
+      </div>
+  </div>
+
+<a href="/home">Home</a><br>
+<a href="/logout">Logout</a>
+
+{% endblock %}

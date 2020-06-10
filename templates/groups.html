@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/groups.css') }}">
+
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div id="form">
+  <div id="header">
+    <h1>Groups</h1>
+    <center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+    </center>
+  </div>
+  {% for error in errors %}
+    <p class="error">{{ error }}</p>
+  {% endfor %}
+  {% for s in success %}
+    <p class="success">{{ s }}</p>
+  {% endfor %}
+  <div id="main">
+    <center>
+      <h4> List of Groups </h4>
+      {% for i in groups %}
+      <form action="" method="POST" name="groups">
+        <div id="input-holder">
+          <button type="submit" name="sub" value="{{i['g_id']}}"> {{i['g_name']}} </button>
+        </div>
+      </form>
+      {% endfor %}
+    </center>
+
+    <center>
+      <h3> Add user to a Group </h3>
+
+      <form action="" method="POST" name="groups">
+        <select class="login-select" name="gid">
+          {% for i in groups %}
+          <option value="{{i['g_id']}}">{{i['g_name']}}</option>
+          {% endfor %}
+        </select>
+    </center>
+
+    <center>
+
+      <select class="login-select" name="names">
+        {% for i in users %}
+        <option value="{{i['user_hash']}}">{{i['first_name']}} {{i['last_name']}}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <input name="addusers" type="submit" value="Submit">
+      </form>
+    </center>
+
+    <center>
+      <h3> Create a Group </h3>
+      <form action="" method="POST" name="groups">
+        <label for="team">Create a Group:</label><br>
+        <input type="text" id="team" name="team" value=""><br><br>
+        <input name="team" type="submit" value="Submit">
+      </form>
+    </center>
+  </div>
+
+  <div id="footer">
+    <a href="/home">Back</a><br>
+    <a href="/logout">Logout</a>
+  </div>
+</div>
+{% endblock %}

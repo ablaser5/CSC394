@@ -1,0 +1,81 @@
+#form {
+  overflow: none;
+  width: 800px;
+  height: 700px;
+  border-radius: 5px;
+  border: 1px solid black;
+  margin: auto;
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+  background-color: lightgray;
+}
+
+#first-form {
+  width: 290px;
+  background-color: #02054d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#user-info {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#accent-color-form {
+  width: 10px;
+  background-color: #d66a27;
+}
+
+#second-form {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+#logout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#user-icon {
+  margin-top: 15px;
+  border-radius: 50%;
+  height: 72px;
+  width: 72px;
+}
+
+#taskonnect {
+  margin-top: 15px;
+}
+
+.button {
+  width: 240px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  margin-top: 10px;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid black;
+  background-color: lightgray;
+}
+
+#logout {
+  color: white;
+  margin-bottom: 15px;
+}

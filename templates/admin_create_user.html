@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Admin - Create User{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_create_user.css') }}">
+
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+	User is Logged In: {{ user['user_hash'] }} <br>
+	User Permission: {{ user['permission'] }}
+
+	<div id="form">
+		<div id="header">
+			<h1>Admin - Invite User</h1>
+			<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+			</center>
+		</div>
+		<div id="main">
+			<span><h3>Invite User</h3></span>
+		<form action="" method="POST" name="create_user">
+			<div id="input-holder">
+				{% for error in errors %}
+					<p class="error">{{ error }}</p>
+				{% endfor %}
+				{% for s in success %}
+					<p class="success">{{ s }}</p>
+				{% endfor %}
+				<input type="text" name="email" class="login-input" placeholder="Email">
+				<select class="login-select" name="permission">
+					{% for p in permissions %}
+						<option value="{{ p['id'] }}">{{ p['permission_title'] }}</option>
+					{% endfor %}
+				</select>
+				<select class="login-select" name="position">
+					{% for p in positions %}
+						<option value="{{ p['id'] }}">{{ p['position_title'] }}</option>
+					{% endfor %}
+				</select>
+				<input type="submit" name="submit" class="login-input" id="submit">
+			</div>
+		</form>
+		</div>
+		<div id="footer">
+			<a href="/home">Back</a><br>
+			<a href="/logout">Logout</a>
+		</div>
+	</div>
+
+
+{% endblock %}

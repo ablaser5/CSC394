@@ -16,6 +16,64 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `card_comments`
+--
+
+DROP TABLE IF EXISTS `card_comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `card_comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `card_id` int(11) DEFAULT NULL,
+  `user` varchar(256) DEFAULT NULL,
+  `comment` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `card_comments`
+--
+
+LOCK TABLES `card_comments` WRITE;
+/*!40000 ALTER TABLE `card_comments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `card_comments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cards`
+--
+
+DROP TABLE IF EXISTS `cards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `assigned_to` varchar(256) DEFAULT NULL,
+  `kanban_category` varchar(50) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `date_created` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_completed` date DEFAULT NULL,
+  `completed` int(1) DEFAULT NULL,
+  `owner` varchar(256) DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cards`
+--
+
+LOCK TABLES `cards` WRITE;
+/*!40000 ALTER TABLE `cards` DISABLE KEYS */;
+INSERT INTO `cards` VALUES (1,'d','d','pbkdf2:sha256:150000$RIqrvkII$84d19d45eb351e522750d68c5177095004065911b350e28ced94e0d556b5b9f9','todo',13,NULL,NULL,0,'pbkdf2:sha256:150000$RIqrvkII$84d19d45eb351e522750d68c5177095004065911b350e28ced94e0d556b5b9f9',NULL),(2,'dsfdfsdfs','ffdfdf','pbkdf2:sha256:150000$RIqrvkII$84d19d45eb351e522750d68c5177095004065911b350e28ced94e0d556b5b9f9','todo',13,'2020-05-26 03:46:06',NULL,0,'pbkdf2:sha256:150000$RIqrvkII$84d19d45eb351e522750d68c5177095004065911b350e28ced94e0d556b5b9f9','2020-05-30');
+/*!40000 ALTER TABLE `cards` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `config`
 --
 
@@ -162,36 +220,8 @@ CREATE TABLE `user_groups` (
 
 LOCK TABLES `user_groups` WRITE;
 /*!40000 ALTER TABLE `user_groups` DISABLE KEYS */;
-INSERT INTO `user_groups` VALUES (13,'pbkdf2:sha256:150000$RIqrvkII$84d19d45eb351e522750d68c5177095004065911b350e28ced94e0d556b5b9f9');
+INSERT INTO `user_groups` VALUES (13,'pbkdf2:sha256:150000$RIqrvkII$84d19d45eb351e522750d68c5177095004065911b350e28ced94e0d556b5b9f9'),(13,'pbkdf2:sha256:150000$5TUocZvU$034b1beace54d4cf8b7421563e51e65a3cc95b41c20a1538d3119144ab60dce7');
 /*!40000 ALTER TABLE `user_groups` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `user_projects`
---
-
-DROP TABLE IF EXISTS `user_projects`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_projects` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `project_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `project_id` (`project_id`),
-  CONSTRAINT `user_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `user_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_projects`
---
-
-LOCK TABLES `user_projects` WRITE;
-/*!40000 ALTER TABLE `user_projects` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_projects` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -240,4 +270,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-25 19:44:26
+-- Dump completed on 2020-05-26  0:22:58

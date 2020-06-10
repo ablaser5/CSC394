@@ -1,23 +1,34 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block head %}
-  {{ super() }}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+
+{{ super() }}
 {% endblock %}
 {% block content %}
 
-	<div id="form">
-		<span><h3>Login</h3></span>
-		<form action="" method="POST" name="login">
-			<div id="input-holder">
-				{% for error in errors %}
-					<p class="error">{{ error }}</p>
-				{% endfor %}
-				<input type="text" name="email" class="login-input" placeholder="Email">
-				<input type="password" name="password" class="login-input" placeholder="Password">
+<div id="form">
+	<span>
+		<h3>Login</h3>
+	</span>
+	<form action="" method="POST" name="login">
+		<div>
+			<center><img src="static/assets/KonnectLogos.png">
+			</center>
+		</div>
+		<div id="input-holder">
+			{% for error in errors %}
+			<p class="error">{{ error }}</p>
+			{% endfor %}
+			<input type="text" name="email" class="login-input" placeholder="Email">
+			<input type="password" name="password" class="login-input" placeholder="Password">
+			<div class="button-container">
 				<input type="submit" name="submit" class="login-input" id="submit">
-				<p>Don't have an account? <a href="/register">Register</a></p>
 			</div>
-		</form>
-	</div>
+			<p>Don't have an account? <a href="/register">Register</a></p>
+		</div>
+	</form>
+</div>
 
 {% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_edit_user.css') }}">
+
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+	User is Logged In: {{ user['user_hash'] }} <br>
+	User Permission: {{ user['permission'] }}
+
+	<h1>Edit User</h1>
+	{% for error in errors %}
+		<p class="error">{{ error }}</p>
+	{% endfor %}
+	{% for s in success %}
+		<p class="success">{{ s }}</p>
+	{% endfor %}
+	<form action="" method="POST" name="admin_edit_user">
+		<table>
+			<tr>
+				<th>Email</th>
+				<td><input type="text" name="email" value="{{ user_data['email'] }}"></td>
+			</tr>
+			<tr>
+				<th>First Name</th>
+				<td><input type="text" name="first_name" value="{{ user_data['first_name'] }}"></td>
+			</tr>
+			<tr>
+				<th>Last Name</th>
+				<td><input type="text" name="last_name" value="{{ user_data['last_name'] }}"></td>
+			</tr>
+			<tr>
+				<th>Permission</th>
+				<td>
+					<select name="permission_id">
+						{% for p in permissions %}
+							{% if p['id'] == user_data['permission_id'] %}
+								<option selected="true" value="{{ p['id'] }}">{{ p['permission_title'] }}</option>
+							{% else %}
+								<option value="{{ p['id'] }}">{{ p['permission_title'] }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>Position</th>
+				<td>
+					<select name="position_id">
+						{% for p in positions %}
+							{% if p['id'] == user_data['position_id'] %}
+								<option selected="true" value="{{ p['id'] }}">{{ p['position_title'] }}</option>
+							{% else %}
+								<option value="{{ p['id'] }}">{{ p['position_title'] }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+		</table>
+		<input type="submit" name="submit" value="Edit User">
+	</form>
+	<a href="/admin_manage_users">Back</a><br>
+	<a href="/home">Home</a><br>
+	<a href="/logout">Logout</a>
+
+{% endblock %}
