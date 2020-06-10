@@ -38,6 +38,7 @@
 	width: 100%;
 	height: calc(100% - 30px);
 	background-color: grey;
+	overflow: auto;
 }
 .add-card {
 	width: 25px;

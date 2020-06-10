@@ -71,29 +71,29 @@
 						{% endfor %}
 					</div>
 				</div>
-				<div class="board-function">
-					<div class="board-function-header">Complete<a
-							href="/kanban/add_card?category=complete&group={{kanban}}">
-							<div class="add-card">+</div>
-						</a></div>
-					<div class="board-function-body">
-						{% for card in kanbans[kanban]['cards']['complete'] %}
-						<div class="kanban-card">
-							<div class="kanban-card-title">{{ card['title'] }}</div>
-							<p>Assigned To: {{ card['first_name'] }}</p>
-							<p>Due Date: {{ card['due_date'] }}</p>
-							<p>Description: {{ card['description'] }}</p>
-							<a href="/kanban/card/{{card['card_id']}}">
-								<div class="card-button">View Card</div>
-							</a>
-							<a href="/kanban/card/move?card={{card['card_id']}}&destination=inprogress">
-								<div class="move-card">
-									<< /div>
-							</a>
-						</div>
-
-						{% endfor %}
+			</div>
+			<div class="board-function">
+				<div class="board-function-header">Complete<a
+						href="/kanban/add_card?category=complete&group={{kanban}}">
+						<div class="add-card">+</div>
+					</a></div>
+				<div class="board-function-body">
+					{% for card in kanbans[kanban]['cards']['complete'] %}
+					<div class="kanban-card">
+						<div class="kanban-card-title">{{ card['title'] }}</div>
+						<p>Assigned To: {{ card['first_name'] }}</p>
+						<p>Due Date: {{ card['due_date'] }}</p>
+						<p>Description: {{ card['description'] }}</p>
+						<a href="/kanban/card/{{card['card_id']}}">
+							<div class="card-button">View Card</div>
+						</a>
+						<a href="/kanban/card/move?card={{card['card_id']}}&destination=inprogress">
+							<div class="move-card">
+								<< /div>
+						</a>
 					</div>
+
+					{% endfor %}
 				</div>
 			</div>
 		</div>
