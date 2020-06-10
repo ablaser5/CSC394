@@ -2,24 +2,40 @@
 {% block title %}Home{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/grouplist.css') }}">
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
 
-<h2>Team List</h2>
-<ol> 
-{% for i in team %} 
- <form action="/grouplist" method="POST" name="group">
-  <li>
-        
+<div id="form">
+  <div id="header">
+    <h1>Team List</h1>
+    <center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+    </center>
+  </div>
+
+
+  <div id="main">
+    <ol>
+      {% for i in team %}
+      <form action="/grouplist" method="POST" name="group">
+        <li>
+
           <a>{{i['first_name']}}</a>
           <button name="names" type="submit" value="{{i['g_id']}}, {{i['first_name']}}, {{i['id']}}"> Delete </button>
-        
-  </li>
-</form>
-{% endfor %}
-</ol>
-<a href = "/groups"> back to groups</a><br>
-<a href="/home">Home</a><br>
-<a href="/logout">Logout</a>
+
+        </li>
+      </form>
+      {% endfor %}
+    </ol>
+  </div>
+
+  <div id="footer">
+    <a href="/groups"> back to groups</a><br>
+    <a href="/home">Home</a><br>
+    <a href="/logout">Logout</a>
+  </div>
+</div>
+
+
+
 {% endblock %}

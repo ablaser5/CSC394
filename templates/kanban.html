@@ -2,16 +2,15 @@
 {% block title %}Home{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/kanban.css') }}">
-
   {{ super() }}
 {% endblock %}
 {% block content %}
-
-	User is Logged In: {{ user['user_hash'] }} <br>
-	User Permission: {{ user['permission'] }}
-
-	<h1>KanBan</h1>
-
+<div id="form">
+	<div id="header">
+		<h1>KanBan</h1>
+		<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+		</center>
+	</div>
 	{% for kanban in kanbans %}
 	<div class="kanban">
 		<p id="kanban-group">Group: {{kanbans[kanban]['title']}}</p>
@@ -64,17 +63,16 @@
 							<a href="/kanban/card/{{card['card_id']}}"><div class="card-button">View Card</div></a>
 							<a href="/kanban/card/move?card={{card['card_id']}}&destination=inprogress"><div class="move-card"><</div></a>
 						</div>
-
 					{% endfor %}
 				</div>
 			</div>
 		</div>
 	</div>
 	{% endfor %}
-
-
-
-	<a href="/home">Home</a><br>
-	<a href="/logout">Logout</a>
-
+	<div id="footer">
+		<a href="/home">Back</a><br>
+		<a href="/logout">Logout</a>
+	</div>
+	</div>
+	
 {% endblock %}

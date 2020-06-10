@@ -9,7 +9,7 @@ from project.database import connect, verifyUser, checkUser,\
 							getAllPositions, getSiteURL, getColumns, getAllGroups, \
 							getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups, \
 							getGroupMembers, getKanbanCards, getKanbanCard, moveKanbanCard, \
-							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups,getUserHash
+							getAllPositions, getSiteURL, getColumns, getAllGroups, getUsersByGroups, getAllUsers,addUser,deleteUser,getUserGroups,getUserHash, getKanbanCardComments
 
 from project.forms import loadForm, checkEmptyForm
 
@@ -282,9 +282,28 @@ def kanban_card(card_number):
 	errors = []
 	if user:
 		card = getKanbanCard(card_number)
-		return render_template('kanban_card.html', user=user, errors=errors, success=success, card=card)
+		comments = getKanbanCardComments(card_number)
+		print(comments)
+		return render_template('kanban_card.html', user=user, errors=errors, success=success, card=card, comments=comments)
 	else:
 		return redirect(url_for('login'))
+
+@app.route('/kanban/card/comment', methods=['POST', 'GET'])
+def kanban_card_comment():
+	user = session['user_hash']
+	user = currentUser(user)
+	sql = "INSERT INTO card_comments (card_id, user, comment) VALUES (%s, %s, %s)"
+	if request.method == 'POST':
+		comment = request.form['comment']
+		card_id = request.form['card_id']
+		if comment and comment != '' and comment != ' ':
+			db, cur = connect()
+			cur.execute(sql, [card_id, user['user_hash'], comment])
+			db.commit()
+			db.close()
+			return redirect('http://127.0.0.1:5000/kanban/card/'+str(card_id), code=302)
+	return redirect('http://127.0.0.1:5000/kanban/card/'+str(card_id), code=302)
+
 
 @app.route('/kanban/card/edit', methods=['POST', 'GET'])
 def kanban_card_edit():

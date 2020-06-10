@@ -2,17 +2,18 @@
 {% block title %}Home{% endblock %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_manage_users.css') }}">
+
 {{ super() }}
 {% endblock %}
 {% block content %}
-
-<!-- User is Logged In: {{ user['user_hash'] }} <br>
-	User Permission: {{ user['permission'] }} -->
-
 <div id="form">
 	<div id="header">
 		<h1>Manage Users</h1>
 		<center><img id="taskonnect" src="static/assets/KonnectLogos.png">
+		</center>
+	</div>
+	<div>
+		<center><img id="user-icon" src="static/assets/user-icon.png">
 		</center>
 	</div>
 	<div id="main">
@@ -28,7 +29,7 @@
 			<tr>
 				{% for key in u %}
 				{% if key == 'email' %}
-				<td><a href="/admin_edit_user/{{ u['user_hash'] }}">{{ u[key] }}</a></td>
+				<td><a href="/admin_edit_user{{ u['user_hash'] }}">{{ u[key] }}</a></td>
 				{% else %}
 				<td>{{ u[key] }}</td>
 				{% endif %}
@@ -42,9 +43,8 @@
 		<a href="/home">Back</a><br>
 		<a href="/logout">Logout</a>
 	</div>
+
 </div>
-
-
 
 
 {% endblock %}
